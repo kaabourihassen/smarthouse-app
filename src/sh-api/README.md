@@ -1,232 +1,107 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# SmartHouse API (NestJS)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A powerful, scalable backend service built with [NestJS](https://nestjs.com/) designed to power the SmartHouse application. This API handles everything from user authentication and billing to real-time IoT device telemetry via MQTT, providing a robust foundation for smart home management.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Key Features
 
-## Description
+* **IoT Ingestion via MQTT**: Real-time telemetry ingestion from smart home devices (DHT22, MQ2, Flame sensors, ESP32) using Mosquitto.
+* **Smart Alerts & Security**: Auto-generates security events and push notifications when anomalies (like high gas levels or flames) are detected.
+* **Stripe Billing & Subscriptions**: Full integration with Stripe for tiered subscription plans, payment processing, and secure webhook handling.
+* **Google OAuth Sign-In**: Integrated Google Identity Services (GIS) and standard JWT email/password for secure user authentication.
+* **AI Computer Vision (Human Detection)**: Uses TensorFlow.js (`coco-ssd`) to analyze camera streams and screenshots for human presence, automatically triggering security recordings and alerts.
+* **FFmpeg Video Processing**: Seamlessly spawns `ffmpeg` processes to record detection events to `.mp4` and extract high-quality screenshots on demand.
+* **Real-time WebSockets**: Employs Socket.IO to emit instant live push notifications to the frontend client when alerts (e.g. fire, gas, motion) trigger.
+* **Secure MJPEG Stream Relay**: Proxies external IP camera streams securely through the backend to protect sensitive camera credentials from being exposed on the frontend.
+* **AI-Powered Complaint Moderation**: User complaints are automatically moderated server-side using the OpenAI API to ensure safe communication.
+* **Admin Management**: Dedicated endpoints for administrators to oversee users, system readings, complaints, and subscriptions.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🏗️ Architecture (Domain-Driven Design)
 
-## IoT ingestion (ESP32) via MQTT (Mosquitto)
+The codebase follows a modular Domain-Driven Design (DDD) approach to ensure maintainability:
+* `iam` (Identity & Access): Handles Authentication, JWT strategies, Google OAuth, and User profiles.
+* `iot` (Internet of Things): Manages Rooms, Devices (sensors, actuators), Cameras, and Camera Recordings/Screenshots.
+* `billing_domain`: Manages Stripe Subscriptions, Invoicing, and Webhooks.
+* `core_domain`: Manages system-wide concerns like Admin operations, Notifications, User Complaints, and Event History tracking.
 
-If you switched to Mosquitto + MQTT, the API can also subscribe to your sensor topics and ingest readings automatically.
+## 🛠️ Tech Stack
 
-### What the API listens to
+* **Framework**: NestJS (Node.js/TypeScript)
+* **Database**: MongoDB (Mongoose)
+* **IoT Protocol**: MQTT (via Mosquitto)
+* **Real-time Communication**: WebSockets (Socket.IO)
+* **Video Processing**: FFmpeg
+* **Authentication**: JWT & Google OAuth
+* **Payments**: Stripe API
+* **AI Integration**: OpenAI API & TensorFlow.js
 
-By default the API subscribes to:
+---
 
-- DHT22 (temperature + humidity in one topic): `smarthome/+/dht22`
-- MQ2: `smarthome/+/mq2`
-- Flame: `smarthome/+/flame`
-- Alerts: `smarthome/alerts`
+## ⚙️ Configuration & Environment Variables
 
-With your ESP32 sketch topics:
+Copy the provided example environment file and configure it with your credentials:
 
-- `smarthome/salon/dht22`
-- `smarthome/salon/mq2`
-- `smarthome/salon/flame`
-- `smarthome/alerts`
-
-Payload format expected (matches your Arduino sketch `publishData(...)`):
-
-```json
-{ "device": "esp32_smart_home", "sensor": "temperature", "value": 23.4, "unit": "C", "status": "normal" }
+```bash
+cp .env.example .env
 ```
 
-The API pairs temperature + humidity received close together (default window: 2 minutes) and then calls the existing `DevicesService.upsertTemperatureHumidityForUser(...)`.
+### Essential Environment Variables
+* `PORT` - The port the API runs on (default: `3000`)
+* `MONGODB_URI` - MongoDB connection string
+* `JWT_SECRET` / `JWT_EXPIRES_IN` - JWT authentication settings
+* `OPENAI_API_KEY` - API key for AI complaint moderation
+* `GOOGLE_CLIENT_ID` - Google OAuth Web Client ID
 
-### MQ2 via MQTT
+### Stripe Configuration
+* `STRIPE_SECRET_KEY` - Your secret Stripe API key
+* `STRIPE_WEBHOOK_SECRET` - Stripe webhook signing secret
+* `STRIPE_PRICE_BASIC`, `STRIPE_PRICE_PREMIUM_PLUS`, `STRIPE_PRICE_EXTENDED_PRO` - Price IDs for subscription tiers
 
-The API can also ingest MQ2 readings via MQTT.
+### MQTT Configuration (Optional)
+To enable IoT telemetry ingestion:
+* `MQTT_INGEST_ENABLED=true`
+* `MQTT_URL` or `MQTT_HOST` & `MQTT_PORT` - Your MQTT broker details
+* `MQTT_INGEST_USER_ID` - Default user ID for incoming telemetry data
 
-- Default topic: `smarthome/+/mq2`
-- Example: `smarthome/salon/mq2`
+---
 
-Payload example (recommended):
+## 🏃 Getting Started
 
-```json
-{ "gasValue": 512, "gasDetected": true, "gasLevel": "warning" }
-```
+### Prerequisites
+* Node.js (v18+)
+* MongoDB instance running
+* Mosquitto MQTT broker (optional, for IoT ingestion)
 
-Your ESP32 sketch payload also works:
-
-```json
-{ "device": "esp32_smart_home", "sensor": "MQ2", "value": 1500, "unit": "ADC", "status": "warning" }
-```
-
-### Flame via MQTT
-
-- Default topic: `smarthome/+/flame`
-- Example: `smarthome/salon/flame`
-
-ESP32 sketch payload example:
-
-```json
-{ "device": "esp32_smart_home", "sensor": "FLAME", "value": 1, "unit": "state", "status": "critical" }
-```
-
-When a flame is detected, the API writes a security event into History.
-
-### Alerts topic
-
-- Default topic: `smarthome/alerts`
-
-ESP32 sketch payload example (`publishAlert(...)`):
-
-```json
-{ "device":"esp32_smart_home", "type":"TEMP_HIGH", "sensor":"DHT22", "severity":"warning", "message":"Temperature trop elevee", "value":35.2, "threshold":35.0 }
-```
-
-### Env vars
-
-Set these in `.env` (API side):
-
-- `MQTT_INGEST_ENABLED=true` to enable MQTT ingestion
-
-User routing (choose one):
-
-- Fixed user (default/simple): `MQTT_INGEST_USER_ID=<userId>`
-- Dynamic user from topic: `MQTT_INGEST_USER_ID_FROM_TOPIC=true`
-  - Topic format must be `.../<userId>/<room>/<metric>`
-  - Example: `smarthome/USER123/salon/temperature`
-- Dynamic user from payload: `MQTT_INGEST_USER_ID_FROM_PAYLOAD=true`
-  - Payload must include `userId`
-
-Safety (recommended if using dynamic user ids):
-
-- `MQTT_INGEST_ALLOWED_USER_IDS=userId1,userId2`
-
-Connection settings (pick one style):
-
-- `MQTT_URL=mqtt://192.168.1.99:1883`
-
-or
-
-- `MQTT_HOST=192.168.1.99`
-- `MQTT_PORT=1883`
-
-Optional:
-
-- `MQTT_USERNAME=` / `MQTT_PASSWORD=` (if your broker requires auth)
-- `MQTT_CLIENT_ID=sh-api`
-- `MQTT_DHT_TITLE=DHT22` (device title used in the database)
-- `MQTT_DHT_TOPIC=smarthome/+/dht22`
-- `MQTT_DHT_TEMP_TOPIC=smarthome/+/temperature`
-- `MQTT_DHT_HUM_TOPIC=smarthome/+/humidity`
-- `MQTT_MQ2_TOPIC=smarthome/+/mq2`
-- `MQTT_MQ2_TITLE=MQ2`
-- `MQTT_FLAME_TOPIC=smarthome/+/flame`
-- `MQTT_ALERTS_TOPIC=smarthome/alerts`
-- `MQTT_STATUS_TOPIC=smarthome/device/status`
-- `MQTT_DHT_PAIR_WINDOW_MS=120000`
-- `MQTT_INGEST_IGNORE_RETAINED=false` (set `true` if you don’t want retained messages to create timeline points after API restarts)
-
-## Google sign-in
-
-This project supports Google Sign-In using Google Identity Services (GIS): the frontend obtains a Google ID token and exchanges it with the API for a normal session cookie.
-
-- Frontend loads GIS in [sh-client/init-client-folder/src/index.html](sh-client/init-client-folder/src/index.html) and needs a public Web Client ID.
-- API verifies the ID token and issues a session cookie via `POST /api/auth/google`.
-
-Configuration:
-
-- API env var: `GOOGLE_CLIENT_ID=<your Google OAuth Web Client ID>`
-- Frontend global: set `window.__GOOGLE_CLIENT_ID__` in [sh-client/init-client-folder/src/index.html](sh-client/init-client-folder/src/index.html)
-
-## Complaint moderation (OpenAI)
-
-Complaints submitted to `POST /api/complaints` are moderated server-side using OpenAI's Moderation API.
-
-- Env var required on the API: `OPENAI_API_KEY=<your OpenAI API key>`
-- Behavior: if the complaint text is flagged as offensive, the API returns HTTP 400 and the complaint is not saved.
-
-## Project setup
+### Installation
 
 ```bash
 $ npm install
 ```
 
-## Compile and run the project
+### Running the API
 
 ```bash
-# development
+# Development mode
 $ npm run start
 
-# watch mode
+# Watch mode (recommended for local development)
 $ npm run start:dev
 
-# production mode
+# Production mode
 $ npm run start:prod
 ```
 
-## Run tests
+## 🧪 Testing
 
 ```bash
-# unit tests
+# Unit tests
 $ npm run test
 
-# e2e tests
+# E2E tests
 $ npm run test:e2e
 
-# test coverage
+# Test coverage
 $ npm run test:cov
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 📄 License
+This project is [MIT licensed](LICENSE).
