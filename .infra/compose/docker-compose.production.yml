@@ -1,0 +1,105 @@
+name: smarthouse
+services:
+  api:
+    build:
+      context: ../../src/sh-api
+      target: production
+      dockerfile: ../../.infra/dockerfiles/api.dockerfile
+    container_name: sh-api
+    environment:
+      NODE_ENV: production
+    env_file:
+      - ../../src/sh-api/.production.env
+    ports:
+      - "3000"
+    depends_on:
+      - db
+    networks:
+      - smarthouse-network
+
+  client:
+    build:
+      context: ../../src/sh-client
+      dockerfile: ../../.infra/dockerfiles/client.dockerfile
+      target: build
+    container_name: sh-client
+    tty: true
+    environment:
+      NODE_ENV: production
+    ports:
+      - "4200:80"
+    volumes:
+      - client_dist:/usr/src/client/dist/sh-client/browser
+      - node_modules:/usr/src/client/node_modules
+    networks:
+      - smarthouse-network
+
+  # Nginx Proxy Server
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:ro # Use custom Nginx configuration
+      - client_dist:/usr/share/nginx/html:ro # Serve Angular app from dist folder
+    container_name: sh-nginx
+    ports:
+      - "80:80" # Expose Nginx on port 80
+    depends_on:
+      - api
+      - client
+    networks:
+      - smarthouse-network
+
+  # MongoDB Database
+  db:
+    image: mongo:8
+    environment:
+      NODE_ENV: production
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: <password>
+      MONGO_INITDB_DATABASE: smarthouse
+    container_name: sh-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ../mongodb/initdb:/docker-entrypoint-initdb.d
+    networks:
+      - smarthouse-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: sh-prometheus
+    volumes:
+      - ../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - smarthouse-network
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: sh-grafana
+    ports:
+      - "3001:3000"
+    volumes:
+      - ../grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - smarthouse-network
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
+  prometheus_data:
+  grafana_data:
+  client_dist:
+  node_modules:
+
+
+networks:
+  smarthouse-network:
+    driver: bridge

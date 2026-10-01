@@ -1,0 +1,6 @@
+[submodule "src/sh-client"]
+	path = src/sh-client
+	url = https://gitlab.com/smarthoused/sh-client.git
+[submodule "src/sh-api"]
+	path = src/sh-api
+	url = https://gitlab.com/smarthoused/sh-api.git

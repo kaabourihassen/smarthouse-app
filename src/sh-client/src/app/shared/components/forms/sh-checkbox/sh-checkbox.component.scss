@@ -1,0 +1,36 @@
+.sh-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+
+  &__input {
+    display: none;
+  }
+
+  &__box {
+    width: 15px;
+    height: 15px;
+    border: 1.5px solid #c5c9d0;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    transition: all 0.15s ease;
+    color: #ffffff;
+    flex-shrink: 0;
+  }
+
+  &__input:checked + &__box {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+  }
+
+  &__label {
+    font-size: 12.5px;
+    color: #4b5563;
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,16 @@
+@use '../admin' as *;
+
+.admin__table-head,
+.admin__table-row {
+  grid-template-columns: 1.6fr 1.2fr 2.2fr 0.8fr 0.8fr;
+  align-items: center;
+}
+
+.admin__msg {
+  color: rgba(13, 51, 82, 0.85);
+  font-weight: 700;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

@@ -1,0 +1,7 @@
+# Prometheus scrape configuration for the NestJS application
+scrape_configs:
+  - job_name: 'nestjs-app'
+    static_configs:
+      - targets: ['host.docker.internal:3000']
+    metrics_path: '/api/metrics'
+    scrape_interval: 15s

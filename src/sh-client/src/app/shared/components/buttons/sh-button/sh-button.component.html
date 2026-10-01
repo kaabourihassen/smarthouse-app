@@ -1,0 +1,10 @@
+<button
+  [type]="type"
+  class="sh-button"
+  [class.sh-button--primary]="variant === 'primary'"
+  [class.sh-button--outline]="variant === 'outline'"
+  [class.sh-button--full-width]="fullWidth"
+>
+  <img *ngIf="icon" [src]="icon" alt="" class="sh-button__icon" />
+  <span>{{ label }}</span>
+</button>

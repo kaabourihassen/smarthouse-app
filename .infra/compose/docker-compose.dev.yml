@@ -1,0 +1,92 @@
+name: smarthouse
+services:
+  api:
+    build:
+      context: ../../src/sh-api
+      target: development
+      dockerfile: ../../.infra/dockerfiles/api.dockerfile
+    container_name: sh-api
+    user: root
+    tty: true
+    restart: always
+    volumes:
+      - ../../src/sh-api/:/usr/src/api
+      - api_node_modules:/usr/src/api/node_modules
+    environment:
+      NODE_ENV: development
+      MONGODB_URI: mongodb://sh-user:<password>@db:27017/smarthouse
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - smarthouse
+
+  client:
+    build:
+      context: ../../src/sh-client
+      target: development
+      dockerfile: ../../.infra/dockerfiles/client.dockerfile
+    container_name: sh-client
+    user: root
+    tty: true
+    volumes:
+      - ../../src/sh-client/:/usr/src/client
+      - node_modules:/usr/src/client/node_modules
+    environment:
+      NODE_ENV: development
+    ports:
+      - "4200:4200"
+    networks:
+      - smarthouse
+
+  
+  db:
+    image: mongo:8
+    volumes:
+      - mongo_data:/data/db
+      - ../mongodb/initdb:/docker-entrypoint-initdb.d
+    container_name: sh-db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: <password>
+      MONGO_INITDB_DATABASE: smarthouse
+    ports:
+      - "27017:27017"
+    networks:
+      - smarthouse
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: sh-prometheus
+    volumes:
+      - ../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - smarthouse
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: sh-grafana
+    ports:
+      - "3001:3000"
+    volumes:
+      - ../grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks:
+      - smarthouse
+
+volumes:
+  mongo_data:
+  prometheus_data:
+  grafana_data:
+  node_modules:
+  api_node_modules:
+
+networks:
+  smarthouse:
+    driver: bridge

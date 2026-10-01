@@ -1,0 +1,66 @@
+<div class="auth-layout">
+  <!-- Decorative background circles -->
+  <div class="auth-layout__circle auth-layout__circle--top-left"></div>
+  <div class="auth-layout__circle auth-layout__circle--bottom-left"></div>
+
+  <!-- Smart house image -->
+  <div class="auth-layout__image-wrapper">
+    <img src="/img.jpg" alt="Smart House" class="auth-layout__image" />
+  </div>
+
+  <!-- SVG double wave separator -->
+  <svg
+    class="auth-layout__wave"
+    viewBox="0 0 200 1000"
+    preserveAspectRatio="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M200,0
+         L130,0
+         C110,30 90,80 70,150
+         C40,260 15,350 5,440
+         C-5,530 10,580 40,640
+         C70,700 50,740 30,800
+         C15,850 40,920 80,960
+         C100,980 130,1000 150,1000
+         L200,1000
+         Z"
+      fill="#ffffff"
+    />
+  </svg>
+
+  <!-- White panel -->
+  <div class="auth-layout__panel">
+    <!-- Hamburger menu -->
+    <button class="auth-layout__menu-btn" type="button" aria-label="Menu">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+    </button>
+
+    <!-- Content area -->
+    <div class="auth-layout__content">
+      <ng-content></ng-content>
+    </div>
+
+    <!-- Decorative arc lines (bottom-right) -->
+    <div class="auth-layout__arc-lines">
+      <div class="auth-layout__arc auth-layout__arc--1"></div>
+      <div class="auth-layout__arc auth-layout__arc--2"></div>
+      <div class="auth-layout__arc auth-layout__arc--3"></div>
+    </div>
+  </div>
+</div>

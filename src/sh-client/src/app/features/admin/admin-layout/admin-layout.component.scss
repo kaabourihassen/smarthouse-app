@@ -1,0 +1,31 @@
+@use '../../dashboard/dash-nav' as *;
+
+:host {
+  display: block;
+}
+
+.dash__main {
+  padding: 28px 32px 32px;
+}
+
+.dash__panel {
+  min-height: calc(100vh - 36px);
+  border-radius: 30px;
+  padding: 22px;
+  background:
+    radial-gradient(900px 360px at 50% -14%, rgba(78, 214, 232, 0.18), transparent 62%),
+    radial-gradient(520px 220px at 6% 4%, rgba(78, 214, 232, 0.12), transparent 60%),
+    linear-gradient(180deg, var(--sh-surface) 0%, var(--sh-surface-2) 100%);
+  box-shadow: var(--sh-shadow);
+  overflow: hidden;
+}
+
+@media (max-width: 900px) {
+  .dash__main {
+    padding: 22px 18px 26px;
+  }
+
+  .dash__panel {
+    padding: 18px;
+  }
+}

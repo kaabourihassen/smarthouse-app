@@ -1,0 +1,455 @@
+<div class="dash">
+  <!-- Sidebar -->
+  <aside class="dash__sidebar" [class.dash__sidebar--light]="!isDarkSidebar()">
+    <div class="dash__sidebar-inner">
+      <a class="dash__nav-item" routerLink="/dashboard" routerLinkActive="dash__nav-item--active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/history" routerLinkActive="dash__nav-item--active" aria-label="History">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 12a9 9 0 1 0 3-6.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M3 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/devices" routerLinkActive="dash__nav-item--active" aria-label="Devices">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="6" width="13" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M7 15v2h5v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M19.5 10.5l.7.4-.7 1.2-.8-.2a2.5 2.5 0 0 1-.5.3l-.1.8h-1.4l-.1-.8a2.5 2.5 0 0 1-.5-.3l-.8.2-.7-1.2.7-.4a2.4 2.4 0 0 1 0-.6l-.7-.4.7-1.2.8.2c.2-.1.3-.2.5-.3l.1-.8h1.4l.1.8c.2.1.3.2.5.3l.8-.2.7 1.2-.7.4c0 .2.1.4 0 .6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          <path d="M17.4 10a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z" fill="none" stroke="currentColor" stroke-width="1.6" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/energy" routerLinkActive="dash__nav-item--active" aria-label="Energy">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2 4.5 12.4c-.4.5 0 1.2.6 1.2H11L10 22l8.5-10.4c.4-.5 0-1.2-.6-1.2H13V2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/camera" routerLinkActive="dash__nav-item--active" aria-label="Camera">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h3l2-2h6l2 2h3v12H4V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          <path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/complaints" routerLinkActive="dash__nav-item--active" aria-label="Complaints">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <div class="dash__sidebar-spacer"></div>
+
+      <button class="dash__nav-item dash__nav-item--logout" type="button" (click)="logout()" aria-label="Logout">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 17H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M19 12H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main panel -->
+  <main class="dash__main">
+    <section class="dash__panel">
+      <header class="em__header">
+        <div class="em__header-left">
+          <a class="em__back" routerLink="/dashboard" aria-label="Back">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M15 18l-6-6 6-6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+
+          <div>
+            <h1 class="em__title">Energy management</h1>
+            <p class="em__subtitle">Consumption, production and energy analytics</p>
+          </div>
+        </div>
+
+        <div class="em__header-right">
+          <a class="em__notif" routerLink="/dashboard/notifications" aria-label="Notifications">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+              <path d="M9 19a3 3 0 0 0 6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            @if (unreadNotificationsCount() > 0) {
+              <span class="em__notif-dot" aria-hidden="true"></span>
+            }
+          </a>
+
+          <a class="em__profile" routerLink="/dashboard/profile" aria-label="Profile">
+            @if (currentUser$ | async; as user) {
+              <span class="em__avatar" aria-hidden="true">{{ (user.firstName | slice: 0 : 1) | uppercase }}</span>
+              <span class="em__profile-name">{{ user.firstName }} {{ user.lastName }}</span>
+            } @else {
+              <span class="em__avatar" aria-hidden="true">U</span>
+              <span class="em__profile-name">User</span>
+            }
+          </a>
+        </div>
+      </header>
+
+      <div class="em__actions" aria-label="Quick actions">
+        <button class="em__btn em__btn--ghost" type="button" (click)="exportData()">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 3v10"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M8 9l4 4 4-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M4 21h16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+            Export
+        </button>
+
+        <a class="em__btn em__btn--primary" routerLink="/dashboard/complaints">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M8 7h8M8 11h8M8 15h5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+            Report Issue
+        </a>
+      </div>
+
+      <section class="em__kpis" aria-label="KPIs">
+        @for (kpi of kpis(); track kpi.label) {
+          <article class="em__kpi">
+            <div class="em__kpi-top">
+              <div class="em__kpi-icon" aria-hidden="true">
+                @if (kpi.icon === 'bolt') {
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M13 2 4.5 12.4c-.4.5 0 1.2.6 1.2H11L10 22l8.5-10.4c.4-.5 0-1.2-.6-1.2H13V2Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                }
+                @if (kpi.icon === 'sun') {
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    />
+                    <path
+                      d="M12 2v2m0 16v2M4 12H2m20 0h-2M5 5l1.4 1.4M17.6 17.6 19 19M19 5l-1.4 1.4M6.4 17.6 5 19"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                }
+                @if (kpi.icon === 'tnd') {
+                  <svg viewBox="0 0 24 24">
+                    <path d="M4 7h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M12 7v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M8 11h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                }
+                @if (kpi.icon === 'avg') {
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M4 16l5-5 4 4 7-7"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path d="M20 7v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                }
+              </div>
+
+              <div class="em__trend" aria-hidden="true" [class.em__trend--down]="kpi.trend === 'down'">
+                @if (kpi.trend === 'up') {
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7 14l4-4 3 3 4-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                }
+                @if (kpi.trend === 'down') {
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7 10l4 4 3-3 4 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                }
+                @if (kpi.trend === 'flat') {
+                  <svg viewBox="0 0 24 24">
+                    <path d="M7 12h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                }
+              </div>
+            </div>
+
+            <div class="em__kpi-value">{{ kpi.value }}</div>
+            <div class="em__kpi-label">{{ kpi.label }}</div>
+            <div class="em__kpi-hint">{{ kpi.hint }}</div>
+          </article>
+        }
+      </section>
+
+      <section class="em__grid" aria-label="Analytics">
+        <article class="em__card em__card--wide">
+          <div class="em__card-head">
+            <div>
+              <h2 class="em__card-title">Cost analysis</h2>
+              <p class="em__card-sub">Daily cost trend</p>
+            </div>
+          </div>
+
+          <div class="em__chart">
+            <svg class="em__chart-svg" viewBox="0 0 760 220" role="img" aria-label="Cost chart">
+              <path d="M40 40H740M40 100H740M40 160H740" class="em__gridline" />
+
+              <!-- line -->
+              <path class="em__line" [attr.d]="costChart().path" />
+
+              <!-- points + labels -->
+              <g class="em__pt">
+                @for (p of costChart().points; track p.x) {
+                  <circle [attr.cx]="p.x" [attr.cy]="p.y" r="6" />
+                  <text [attr.x]="p.x" [attr.y]="p.y - 14">{{ p.label }}</text>
+                }
+              </g>
+
+              <!-- x labels -->
+              <g class="em__x">
+                @for (l of costChart().labels; track l.x) {
+                  <text [attr.x]="l.x" y="206">{{ l.label }}</text>
+                }
+              </g>
+            </svg>
+          </div>
+        </article>
+
+        <article class="em__card em__card--left">
+          <div class="em__card-head em__card-head--tabs">
+            <div>
+              <h2 class="em__card-title">Consumption vs production</h2>
+              <p class="em__card-sub">Weekly comparison</p>
+            </div>
+
+            <div class="em__tabs" role="tablist" aria-label="Period">
+              <button class="em__tab" type="button" [class.em__tab--active]="period() === 'day'" (click)="period.set('day')">Day</button>
+              <button class="em__tab" type="button" [class.em__tab--active]="period() === 'week'" (click)="period.set('week')">Week</button>
+              <button class="em__tab" type="button" [class.em__tab--active]="period() === 'month'" (click)="period.set('month')">Month</button>
+            </div>
+          </div>
+
+          <div class="em__placeholder" aria-label="Consumption vs production chart">
+            <svg class="em__chart-svg" [attr.viewBox]="compareChart().viewBox" role="img" aria-label="Consumption vs production">
+              @for (g of compareChart().yGrid; track g.y) {
+                <path [attr.d]="'M ' + compareChart().left + ' ' + g.y + ' H ' + (compareChart().left + compareChart().chartW)" class="em__gridline" />
+              }
+
+              @for (b of compareChart().bars; track b.label) {
+                <rect
+                  class="em__bar em__bar--consumption"
+                  [attr.x]="b.consumption.x"
+                  [attr.y]="b.consumption.y"
+                  [attr.width]="b.consumption.w"
+                  [attr.height]="b.consumption.h"
+                  rx="8"
+                />
+                <rect
+                  class="em__bar em__bar--production"
+                  [attr.x]="b.production.x"
+                  [attr.y]="b.production.y"
+                  [attr.width]="b.production.w"
+                  [attr.height]="b.production.h"
+                  rx="8"
+                />
+              }
+
+              <g class="em__x">
+                @for (b of compareChart().bars; track b.tickX) {
+                  <text [attr.x]="b.tickX" [attr.y]="compareChart().baseY + 44">{{ b.label }}</text>
+                }
+              </g>
+            </svg>
+
+            <div class="em__compare-legend" aria-hidden="true">
+              <div class="em__compare-item">
+                <span class="em__compare-swatch em__compare-swatch--c"></span>
+                Consumption
+              </div>
+              <div class="em__compare-item">
+                <span class="em__compare-swatch em__compare-swatch--p"></span>
+                Production
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="em__card em__card--right">
+          <div class="em__card-head">
+            <div>
+              <h2 class="em__card-title">Breakdown by device</h2>
+            </div>
+          </div>
+
+          <div class="em__donut" aria-label="Breakdown">
+            <svg viewBox="0 0 120 120" class="em__donut-svg" role="img" aria-label="Donut chart">
+              <circle class="em__donut-track" cx="60" cy="60" r="36" />
+              <circle class="em__donut-seg em__donut-seg--a" cx="60" cy="60" r="36" pathLength="100" stroke-dasharray="35 65" stroke-dashoffset="0" />
+              <circle class="em__donut-seg em__donut-seg--b" cx="60" cy="60" r="36" pathLength="100" stroke-dasharray="25 75" stroke-dashoffset="-35" />
+              <circle class="em__donut-seg em__donut-seg--c" cx="60" cy="60" r="36" pathLength="100" stroke-dasharray="20 80" stroke-dashoffset="-60" />
+              <circle class="em__donut-seg em__donut-seg--d" cx="60" cy="60" r="36" pathLength="100" stroke-dasharray="20 80" stroke-dashoffset="-80" />
+            </svg>
+
+            <div class="em__legend">
+              @for (b of breakdown; track b.label) {
+                <div class="em__legend-row">
+                  <span class="em__legend-dot" aria-hidden="true"></span>
+                  <span class="em__legend-label">{{ b.label }}</span>
+                  <span class="em__legend-val">{{ b.value }}%</span>
+                </div>
+              }
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="em__bottom" aria-label="Summary tiles">
+        <article class="em__tile">
+          <div class="em__tile-top">
+            <div class="em__tile-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M3 8h10a3 3 0 1 0-3-3"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M3 12h14a3 3 0 1 1-3 3"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path d="M3 16h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </div>
+            <div>
+              <div class="em__tile-title">Air conditioning</div>
+              <div class="em__tile-sub">Living room</div>
+            </div>
+          </div>
+          <div class="em__tile-val">38 kWh</div>
+          <div class="em__tile-hint">35% of consumption</div>
+        </article>
+
+        <article class="em__tile">
+          <div class="em__tile-top">
+            <div class="em__tile-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M9 18h6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M10 22h4"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M8 10a4 4 0 1 1 8 0c0 2-1.2 2.9-2 4-.4.6-.6 1.1-.7 2H10.7c-.1-.9-.3-1.4-.7-2-.8-1.1-2-2-2-4Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="em__tile-title">Lighting</div>
+              <div class="em__tile-sub">Whole home</div>
+            </div>
+          </div>
+          <div class="em__tile-val">27 kWh</div>
+          <div class="em__tile-hint">25% of consumption</div>
+        </article>
+
+        <article class="em__tile">
+          <div class="em__tile-top">
+            <div class="em__tile-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M14 14.76V5a2 2 0 1 0-4 0v9.76a4 4 0 1 0 4 0Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="em__tile-title">Heating</div>
+              <div class="em__tile-sub">Bathroom</div>
+            </div>
+          </div>
+          <div class="em__tile-val">22 kWh</div>
+          <div class="em__tile-hint">20% of consumption</div>
+        </article>
+      </section>
+    </section>
+  </main>
+</div>

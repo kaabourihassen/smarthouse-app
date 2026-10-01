@@ -1,0 +1,35 @@
+@use '../admin' as *;
+
+.admin__table-head,
+.admin__table-row {
+  grid-template-columns: 2fr 1fr 1fr 0.6fr;
+}
+
+.admin__table-row-btn {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  cursor: pointer;
+}
+
+.admin__table-row--selected {
+  outline: 2px solid rgba(13, 51, 82, 0.18);
+  outline-offset: -2px;
+  background: rgba(13, 51, 82, 0.04);
+}
+
+.admin__members {
+  margin-top: 14px;
+  padding: 14px;
+}
+
+.admin__members-title {
+  font-weight: 950;
+  color: rgba(13, 51, 82, 0.92);
+  margin-bottom: 10px;
+}
+
+.admin__table--compact .admin__table-head,
+.admin__table--compact .admin__table-row {
+  grid-template-columns: 1.6fr 2fr 1fr 0.7fr 1fr;
+}

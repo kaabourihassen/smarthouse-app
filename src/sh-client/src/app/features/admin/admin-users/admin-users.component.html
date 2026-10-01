@@ -1,0 +1,64 @@
+<section class="admin__page" aria-label="Manage users">
+  <div class="admin__head">
+    <div>
+      <div class="admin__kicker">ADMIN</div>
+      <h1 class="admin__title">Manage users</h1>
+    </div>
+
+    <button class="admin__btn" type="button" (click)="refresh()" [disabled]="isLoading()">Refresh</button>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="admin__error">{{ errorMessage() }}</div>
+  }
+
+  @if (isLoading()) {
+    <div class="admin__card">Loading…</div>
+  }
+
+  @if (!isLoading()) {
+    <div class="admin__table admin__table--users">
+      <div class="admin__table-head">
+        <div>User</div>
+        <div>Email</div>
+        <div>Role</div>
+        <div class="admin__cell-right">Actions</div>
+      </div>
+
+      @for (u of users(); track u.id) {
+        <div class="admin__table-row">
+          <div class="admin__cell" data-label="User">
+            <div class="admin__row-title">{{ u.firstName }} {{ u.lastName }}</div>
+          </div>
+
+          <div class="admin__cell admin__mono" data-label="Email">{{ u.email }}</div>
+
+          <div class="admin__cell" data-label="Role">
+            <div class="admin__pill" [class.admin__pill--ok]="u.role === 'admin'">{{ u.role }}</div>
+          </div>
+
+          <div class="admin__cell-right" data-label="Actions">
+            <button
+              class="admin__btn"
+              [class.admin__btn--danger]="!u.banned"
+              type="button"
+              (click)="toggleBan(u.id, !u.banned)"
+              [disabled]="updatingUserId() === u.id || deletingUserId() === u.id || myUserId() === u.id"
+            >
+              {{ u.banned ? 'Unban' : 'Ban' }}
+            </button>
+
+            <button
+              class="admin__btn admin__btn--danger"
+              type="button"
+              (click)="deleteUser(u.id)"
+              [disabled]="deletingUserId() === u.id || myUserId() === u.id"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</section>

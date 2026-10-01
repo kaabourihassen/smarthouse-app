@@ -1,0 +1,92 @@
+# Default values for smarthouse chart.
+
+global:
+  namespace: smarthouse
+  env: production
+
+# NestJS Backend API Configuration
+api:
+  name: api
+  openaiApiKey: ""
+  replicaCount: 2
+  image:
+    repository: smarthouse-api
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: LoadBalancer
+    port: 3000
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  hpa:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 75
+    targetMemoryUtilizationPercentage: 80
+  env:
+    nodeEnv: production
+    corsOrigin: "*"
+
+# Angular Frontend Configuration
+client:
+  name: client
+  replicaCount: 2
+  image:
+    repository: smarthouse-client
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: LoadBalancer
+    port: 4200
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+# MongoDB Database Configuration
+db:
+  name: db
+  image:
+    repository: mongo
+    tag: "8.0"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 27017
+  persistence:
+    enabled: true
+    storageClass: ""
+    size: 5Gi
+  auth:
+    rootUsername: admin
+    rootPassword: ""
+    database: smarthouse
+
+# Ingress Controller Configuration
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-buffering: "off"
+  hosts:
+    - host: smarthouse.local
+      paths:
+        - path: /api
+          pathType: Prefix
+          service: api
+        - path: /
+          pathType: Prefix
+          service: client
+  tls: []

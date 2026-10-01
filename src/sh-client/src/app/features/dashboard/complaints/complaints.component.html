@@ -1,0 +1,365 @@
+<div class="dash">
+  <!-- Sidebar -->
+  <aside class="dash__sidebar" [class.dash__sidebar--light]="!isDarkSidebar()">
+    <div class="dash__sidebar-inner">
+      <a class="dash__nav-item" routerLink="/dashboard" routerLinkActive="dash__nav-item--active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/history" routerLinkActive="dash__nav-item--active" aria-label="History">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 12a9 9 0 1 0 3-6.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M3 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/devices" routerLinkActive="dash__nav-item--active" aria-label="Devices">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="6" width="13" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M7 15v2h5v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M19.5 10.5l.7.4-.7 1.2-.8-.2a2.5 2.5 0 0 1-.5.3l-.1.8h-1.4l-.1-.8a2.5 2.5 0 0 1-.5-.3l-.8.2-.7-1.2.7-.4a2.4 2.4 0 0 1 0-.6l-.7-.4.7-1.2.8.2c.2-.1.3-.2.5-.3l.1-.8h1.4l.1.8c.2.1.3.2.5.3l.8-.2.7 1.2-.7.4c0 .2.1.4 0 .6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          <path d="M17.4 10a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z" fill="none" stroke="currentColor" stroke-width="1.6" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/energy" routerLinkActive="dash__nav-item--active" aria-label="Energy">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2 4.5 12.4c-.4.5 0 1.2.6 1.2H11L10 22l8.5-10.4c.4-.5 0-1.2-.6-1.2H13V2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/camera" routerLinkActive="dash__nav-item--active" aria-label="Camera">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h3l2-2h6l2 2h3v12H4V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          <path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </a>
+
+      <div class="dash__sidebar-spacer"></div>
+
+      <button class="dash__nav-item dash__nav-item--logout" type="button" (click)="logout()" aria-label="Logout">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 17H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M19 12H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main panel -->
+  <main class="dash__main">
+    <section class="dash__panel">
+      <!-- Header -->
+      <header class="cp__header">
+        <div class="cp__header-left">
+          <a class="cp__back" routerLink="/dashboard" aria-label="Back">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+
+          <div>
+            <h1 class="cp__title">Support & Complaints</h1>
+            <p class="cp__subtitle">Report technical issues, device problems, or track assistance tickets</p>
+
+            <button class="cp__add" type="button" (click)="toggleAddForm()">
+              <span class="cp__add-plus" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 5v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              </span>
+              {{ isFormOpen() ? 'Close form' : 'New complaint' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="cp__header-right">
+          <a class="cp__notif" routerLink="/dashboard/notifications" aria-label="Notifications">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+              <path d="M9 19a3 3 0 0 0 6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            @if (unreadNotificationsCount() > 0) {
+              <span class="cp__notif-dot" aria-hidden="true"></span>
+            }
+          </a>
+
+          <a class="cp__profile" routerLink="/dashboard/profile" aria-label="Profile">
+            @if (currentUser$ | async; as user) {
+              <span class="cp__avatar" aria-hidden="true">{{ (user.firstName | slice: 0 : 1) | uppercase }}</span>
+              <span class="cp__profile-name">{{ user.firstName }} {{ user.lastName }}</span>
+            } @else {
+              <span class="cp__avatar" aria-hidden="true">U</span>
+              <span class="cp__profile-name">User</span>
+            }
+          </a>
+        </div>
+      </header>
+
+      <!-- KPI Summary Cards -->
+      <section class="cp__kpis" aria-label="Complaints Overview">
+        <article class="cp__kpi">
+          <div class="cp__kpi-top">
+            <div class="cp__kpi-icon cp__kpi-icon--total">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <span class="cp__kpi-label">Total Tickets</span>
+          </div>
+          <div class="cp__kpi-value">{{ totalCount() }}</div>
+          <div class="cp__kpi-hint">All submitted requests</div>
+        </article>
+
+        <article class="cp__kpi">
+          <div class="cp__kpi-top">
+            <div class="cp__kpi-icon cp__kpi-icon--pending">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+                <path d="M12 6v6l4 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </div>
+            <span class="cp__kpi-label">Pending Review</span>
+          </div>
+          <div class="cp__kpi-value">{{ pendingCount() }}</div>
+          <div class="cp__kpi-hint">Awaiting team triage</div>
+        </article>
+
+        <article class="cp__kpi">
+          <div class="cp__kpi-top">
+            <div class="cp__kpi-icon cp__kpi-icon--reviewed">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <span class="cp__kpi-label">In Progress</span>
+          </div>
+          <div class="cp__kpi-value">{{ reviewedCount() }}</div>
+          <div class="cp__kpi-hint">Under active investigation</div>
+        </article>
+
+        <article class="cp__kpi">
+          <div class="cp__kpi-top">
+            <div class="cp__kpi-icon cp__kpi-icon--resolved">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M22 4L12 14.01l-3-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <span class="cp__kpi-label">Resolved</span>
+          </div>
+          <div class="cp__kpi-value">{{ resolvedCount() }}</div>
+          <div class="cp__kpi-hint">Closed & solved issues</div>
+        </article>
+      </section>
+
+      <!-- Expandable In-Page Form (Matches Device Management Pattern) -->
+      @if (isFormOpen()) {
+        <section class="cp__form" aria-label="New complaint form">
+          <div class="cp__form-head">
+            <div>
+              <div class="cp__form-title">Submit a New Support Ticket</div>
+              <div class="cp__form-sub">Provide relevant details below to help our technical team troubleshoot</div>
+            </div>
+
+            <button class="cp__form-close" type="button" (click)="closeForm()" [disabled]="submitting()" aria-label="Close">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
+
+          <form class="cp__form-grid" [formGroup]="complaintForm" (ngSubmit)="submitComplaint()">
+            <label class="cp__field">
+              <span class="cp__field-label">Issue Category</span>
+              <select class="cp__select" formControlName="category">
+                <option value="general">General Support</option>
+                <option value="hardware">Hardware & Smart Devices</option>
+                <option value="camera">Webcam & Motion Detector</option>
+                <option value="billing">Billing & Subscriptions</option>
+                <option value="security">Security & Privacy</option>
+              </select>
+            </label>
+
+            <label class="cp__field cp__field--wide">
+              <span class="cp__field-label">Subject Title</span>
+              <input class="cp__input" type="text" formControlName="title" placeholder="e.g. Living room motion sensor offline after restart" maxlength="120" />
+            </label>
+
+            <label class="cp__field cp__field--full">
+              <span class="cp__field-label">Detailed Description</span>
+              <textarea class="cp__textarea" formControlName="message" rows="4" maxlength="2000" placeholder="Please describe what happened, steps to reproduce, or any relevant error messages..."></textarea>
+            </label>
+
+            @if (successMsg()) {
+              <div class="cp__alert cp__alert--success">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>{{ successMsg() }}</span>
+              </div>
+            }
+
+            @if (errorMsg()) {
+              <div class="cp__alert cp__alert--error">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <span>{{ errorMsg() }}</span>
+              </div>
+            }
+
+            <div class="cp__form-actions">
+              <button class="cp__btn cp__btn--ghost" type="button" (click)="closeForm()" [disabled]="submitting()">
+                Cancel
+              </button>
+              <button class="cp__btn cp__btn--primary" type="submit" [disabled]="submitting() || complaintForm.invalid">
+                @if (submitting()) {
+                  <span class="cp__spinner" aria-hidden="true"></span>
+                  Submitting ticket...
+                } @else {
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Submit Ticket
+                }
+              </button>
+            </div>
+          </form>
+        </section>
+      }
+
+      <!-- Filter and Search Bar -->
+      <section class="cp__toolbar">
+        <div class="cp__filters">
+          <button
+            class="cp__filter-pill"
+            [class.cp__filter-pill--active]="statusFilter() === 'all'"
+            (click)="setStatusFilter('all')"
+            type="button"
+          >
+            All Tickets ({{ totalCount() }})
+          </button>
+          <button
+            class="cp__filter-pill"
+            [class.cp__filter-pill--active]="statusFilter() === 'pending'"
+            (click)="setStatusFilter('pending')"
+            type="button"
+          >
+            Pending ({{ pendingCount() }})
+          </button>
+          <button
+            class="cp__filter-pill"
+            [class.cp__filter-pill--active]="statusFilter() === 'reviewed'"
+            (click)="setStatusFilter('reviewed')"
+            type="button"
+          >
+            In Progress ({{ reviewedCount() }})
+          </button>
+          <button
+            class="cp__filter-pill"
+            [class.cp__filter-pill--active]="statusFilter() === 'resolved'"
+            (click)="setStatusFilter('resolved')"
+            type="button"
+          >
+            Resolved ({{ resolvedCount() }})
+          </button>
+        </div>
+
+        <div class="cp__search-wrap">
+          <svg class="cp__search-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 21l-4.35-4.35" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input
+            class="cp__search-input"
+            type="search"
+            placeholder="Search tickets by keyword..."
+            [value]="searchQuery()"
+            (input)="onSearchChange($event)"
+          />
+        </div>
+      </section>
+
+      <!-- Ticket Cards List -->
+      <section class="cp__cards-container" aria-label="Complaints list">
+        @if (loadingList()) {
+          <div class="cp__loading-state">
+            <div class="cp__spinner cp__spinner--lg"></div>
+            <p>Loading your support tickets...</p>
+          </div>
+        } @else if (filteredComplaints().length === 0) {
+          <div class="cp__empty-card">
+            <div class="cp__empty-icon-bubble">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </div>
+            <h3 class="cp__empty-title">
+              {{ searchQuery() || statusFilter() !== 'all' ? 'No matching tickets found' : 'No tickets submitted yet' }}
+            </h3>
+            <p class="cp__empty-text">
+              {{ searchQuery() || statusFilter() !== 'all'
+                ? 'Try changing your filter options or search term above.'
+                : 'Encountering an issue with your automated routines, camera, or sensors? Submit your ticket and our team will assist you.' }}
+            </p>
+            @if (!isFormOpen()) {
+              <button class="cp__btn cp__btn--primary cp__empty-btn" type="button" (click)="toggleAddForm()">
+                <span class="cp__add-plus" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                </span>
+                Create Your First Ticket
+              </button>
+            }
+          </div>
+        } @else {
+          <div class="cp__grid">
+            @for (c of filteredComplaints(); track c.id || c._id) {
+              <article class="cp__ticket-card">
+                <div class="cp__ticket-header">
+                  <div class="cp__ticket-tags">
+                    <span class="cp__ticket-num">#{{ (c.id || c._id || '').slice(-5) | uppercase }}</span>
+                    <span
+                      class="cp__badge"
+                      [class.cp__badge--pending]="c.status === 'pending'"
+                      [class.cp__badge--reviewed]="c.status === 'reviewed'"
+                      [class.cp__badge--resolved]="c.status === 'resolved'"
+                      [class.cp__badge--rejected]="c.status === 'rejected'"
+                    >
+                      <span class="cp__badge-dot" aria-hidden="true"></span>
+                      {{ c.status === 'reviewed' ? 'IN PROGRESS' : (c.status | uppercase) }}
+                    </span>
+                  </div>
+
+                  <span class="cp__ticket-time">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 6v6l4 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                    {{ c.createdAt | date:'mediumDate' }}
+                  </span>
+                </div>
+
+                <h3 class="cp__ticket-title">{{ c.title }}</h3>
+                <p class="cp__ticket-desc">{{ c.message }}</p>
+
+                @if (c.adminResponse) {
+                  <div class="cp__admin-box">
+                    <div class="cp__admin-box-header">
+                      <div class="cp__admin-icon-pill">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                      </div>
+                      <span class="cp__admin-box-title">Official Resolution Response</span>
+                    </div>
+                    <p class="cp__admin-box-text">{{ c.adminResponse }}</p>
+                  </div>
+                }
+              </article>
+            }
+          </div>
+        }
+      </section>
+    </section>
+  </main>
+</div>

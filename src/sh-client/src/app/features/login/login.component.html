@@ -1,0 +1,61 @@
+<sh-auth-layout>
+  <div class="login">
+    <h1 class="login__title">
+      Welcome<br />
+      to Smart House
+    </h1>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSignIn()" class="login__form">
+      <sh-input
+        label="Email"
+        type="email"
+        placeholder="Enter your email"
+        formControlName="email"
+      ></sh-input>
+
+      <sh-input
+        label="Password"
+        type="password"
+        placeholder="Enter your password"
+        formControlName="password"
+      ></sh-input>
+
+      <div class="login__options">
+        <sh-checkbox
+          label="Remember me"
+          formControlName="rememberMe"
+        ></sh-checkbox>
+        <a class="login__forgot" (click)="onForgotPassword()">Forgot Password</a>
+      </div>
+
+      @if (errorMessage) {
+        <p class="login__error">{{ errorMessage }}</p>
+      }
+
+      <div class="login__actions">
+        <sh-button
+          [label]="isLoading ? 'Signing in...' : 'Sign In'"
+          variant="primary"
+          type="submit"
+          [fullWidth]="true"
+        ></sh-button>
+
+        <span class="login__divider">Or</span>
+
+        <sh-button
+          label="Sign in with Google"
+          variant="outline"
+          type="button"
+          [fullWidth]="true"
+          icon="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+          (click)="onGoogleSignIn()"
+        ></sh-button>
+      </div>
+    </form>
+
+    <p class="login__signup-link">
+      Don't have an account?
+      <a (click)="navigateToSignup()">Sign up</a>
+    </p>
+  </div>
+</sh-auth-layout>

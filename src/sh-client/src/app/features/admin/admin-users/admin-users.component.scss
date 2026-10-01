@@ -1,0 +1,61 @@
+@use '../admin' as *;
+
+.admin__table--users {
+	.admin__table-head,
+	.admin__table-row {
+		grid-template-columns: 2.2fr 2.4fr 0.9fr 1.3fr;
+		align-items: center;
+	}
+
+	.admin__cell {
+		min-width: 0;
+	}
+
+	.admin__mono {
+		color: var(--sh-muted);
+		font-weight: 800;
+	}
+}
+
+@media (max-width: 900px) {
+	.admin__table--users {
+		border: none;
+		overflow: visible;
+		box-shadow: none;
+
+		.admin__table-head {
+			display: none;
+		}
+
+		.admin__table-row {
+			grid-template-columns: 1fr;
+			gap: 12px;
+			border-top: none;
+			border-radius: 18px;
+			border: 1px solid var(--sh-border);
+			box-shadow: 0 10px 26px rgba(7, 30, 52, 0.06);
+			margin-top: 12px;
+		}
+
+		.admin__cell,
+		.admin__cell-right {
+			display: grid;
+			gap: 6px;
+		}
+
+		.admin__cell::before,
+		.admin__cell-right::before {
+			content: attr(data-label);
+			font-weight: 950;
+			letter-spacing: 0.08em;
+			font-size: 11px;
+			text-transform: uppercase;
+			color: var(--sh-muted);
+		}
+
+		.admin__cell-right {
+			justify-content: flex-start;
+			flex-wrap: wrap;
+		}
+	}
+}

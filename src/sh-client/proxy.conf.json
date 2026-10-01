@@ -1,0 +1,13 @@
+{
+  "/api": {
+    "target": "http://sh-api:3000",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/socket.io": {
+    "target": "http://sh-api:3000",
+    "secure": false,
+    "changeOrigin": true,
+    "ws": true
+  }
+}

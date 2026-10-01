@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "smarthouse.fullname" . }}-config
+  labels:
+    app.kubernetes.io/name: {{ include "smarthouse.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+data:
+  NODE_ENV: {{ .Values.api.env.nodeEnv | quote }}
+  CORS_ORIGIN: {{ .Values.api.env.corsOrigin | quote }}
+  MONGO_INITDB_DATABASE: {{ .Values.db.auth.database | quote }}

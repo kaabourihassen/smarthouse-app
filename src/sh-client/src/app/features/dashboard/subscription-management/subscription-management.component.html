@@ -1,0 +1,463 @@
+<div class="dash">
+  <!-- Sidebar -->
+  <aside class="dash__sidebar" [class.dash__sidebar--light]="!isDarkSidebar()">
+    <div class="dash__sidebar-inner">
+      <a class="dash__nav-item" routerLink="/dashboard" routerLinkActive="dash__nav-item--active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/history" routerLinkActive="dash__nav-item--active" aria-label="History">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 12a9 9 0 1 0 3-6.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M3 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/devices" routerLinkActive="dash__nav-item--active" aria-label="Devices">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="6" width="13" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M7 15v2h5v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M19.5 10.5l.7.4-.7 1.2-.8-.2a2.5 2.5 0 0 1-.5.3l-.1.8h-1.4l-.1-.8a2.5 2.5 0 0 1-.5-.3l-.8.2-.7-1.2.7-.4a2.4 2.4 0 0 1 0-.6l-.7-.4.7-1.2.8.2c.2-.1.3-.2.5-.3l.1-.8h1.4l.1.8c.2.1.3.2.5.3l.8-.2.7 1.2-.7.4c0 .2.1.4 0 .6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          <path d="M17.4 10a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z" fill="none" stroke="currentColor" stroke-width="1.6" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/energy" routerLinkActive="dash__nav-item--active" aria-label="Energy">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2 4.5 12.4c-.4.5 0 1.2.6 1.2H11L10 22l8.5-10.4c.4-.5 0-1.2-.6-1.2H13V2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/camera" routerLinkActive="dash__nav-item--active" aria-label="Camera">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h3l2-2h6l2 2h3v12H4V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          <path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </a>
+
+      <div class="dash__sidebar-spacer"></div>
+
+      <button class="dash__nav-item dash__nav-item--logout" type="button" (click)="logout()" aria-label="Logout">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 17H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M19 12H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="dash__main">
+    <section class="dash__panel">
+      <section class="pm__offers" aria-label="Subscription management">
+        <div class="pm__offers-head">
+          <div>
+            <div class="pm__offers-kicker">OUR OFFERS</div>
+            <div class="pm__offers-title">Choose the plan that fits your needs</div>
+
+            <div class="pm__current" *ngIf="currentPlan() as p; else noPlan">
+              <span class="pm__current-label">Current plan:</span>
+              <span class="pm__current-value">{{ p.title }}</span>
+              <span class="pm__current-hint">You can change your plan anytime.</span>
+            </div>
+
+            <ng-template #noPlan>
+              <div class="pm__current">
+                <span class="pm__current-label">No active plan:</span>
+                <span class="pm__current-hint">Choose a plan to unlock the dashboard features.</span>
+              </div>
+            </ng-template>
+
+            <div class="pm__alert" *ngIf="checkoutError() as err">{{ err }}</div>
+          </div>
+
+          <a class="pm__offers-close" routerLink="/dashboard/profile">Back to profile</a>
+        </div>
+
+        <div class="pm__offers-grid">
+          @for (p of offerPlans; track p.id) {
+            <article class="pm__offer" [class.pm__offer--active]="isPlanActive(p.id)">
+              <div class="pm__offer-top">
+                <div class="pm__offer-badges">
+                  @if (p.badgeLeft) {
+                    <span class="pm__badge">{{ p.badgeLeft }}</span>
+                  }
+                  @if (isPlanActive(p.id)) {
+                    <span class="pm__badge pm__badge--success">Active</span>
+                  }
+                </div>
+
+                <div class="pm__offer-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M12 2 4 5v6c0 6 4 10 8 11 4-1 8-5 8-11V5l-8-3Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="pm__offer-title">{{ p.title }}</div>
+              <div class="pm__offer-subtitle">{{ p.subtitle }}</div>
+
+              <div class="pm__offer-features">
+                @for (f of p.features; track f) {
+                  <div class="pm__feature">
+                    <span class="pm__check" aria-hidden="true">✓</span>
+                    <span>{{ f }}</span>
+                  </div>
+                }
+              </div>
+
+              <div class="pm__offer-price">
+                <div class="pm__offer-amount">{{ p.priceLabel }}</div>
+                <div class="pm__offer-billing">{{ p.billingLabel }}</div>
+              </div>
+
+              <button
+                class="pm__offer-btn"
+                type="button"
+                [class.pm__offer-btn--active]="isPlanActive(p.id)"
+                [disabled]="(!isPlanOwner() && hasActiveSubscription()) || isPlanActive(p.id) || isStartingCheckout()"
+                (click)="startCheckout(p.id)"
+              >
+                {{ getActionLabelForPlan(p.id) }}
+              </button>
+
+              <div class="pm__offer-note" *ngIf="!isPlanActive(p.id)">
+                <ng-container *ngIf="!isPlanOwner() && hasActiveSubscription(); else checkoutInfo">
+                  <span>Only the subscription owner can change the plan.</span>
+                </ng-container>
+                <ng-template #checkoutInfo>
+                  <span *ngIf="isStartingCheckout(); else paymentInfo">Redirecting to secure payment…</span>
+                  <ng-template #paymentInfo>
+                    You will be redirected to a secure payment page. After checkout, you'll come back here and your plan will update automatically.
+                  </ng-template>
+                </ng-template>
+              </div>
+            </article>
+          }
+        </div>
+
+        <section class="pm__cancel" *ngIf="canCancelSubscription()" aria-label="Cancel subscription">
+          <div class="pm__cancel-head">
+            <div>
+              <div class="pm__cancel-title">Cancel subscription</div>
+              <div class="pm__cancel-text">Canceling ends access for all members immediately.</div>
+            </div>
+
+            <button
+              class="pm__cancel-btn"
+              type="button"
+              [disabled]="!isPlanOwner() || isCanceling()"
+              (click)="cancelSubscription()"
+            >
+              {{ isCanceling() ? 'Canceling...' : 'Cancel plan' }}
+            </button>
+          </div>
+
+          <div class="pm__cancel-note" *ngIf="!isPlanOwner()">Only the subscription owner can cancel.</div>
+          <div class="pm__cancel-note" *ngIf="isPlanOwner()">This action cannot be undone.</div>
+          <div class="pm__alert" *ngIf="cancelError() as err">{{ err }}</div>
+        </section>
+
+        <section class="pm__cancel" *ngIf="isSubscriptionCanceled()" aria-label="Canceled subscription">
+          <div class="pm__cancel-head">
+            <div>
+              <div class="pm__cancel-title">Subscription canceled</div>
+              <div class="pm__cancel-text">This plan is already canceled.</div>
+            </div>
+          </div>
+        </section>
+
+        <div
+          class="pm__modal"
+          *ngIf="isCancelConfirmOpen()"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="pm-cancel-title"
+        >
+          <div class="pm__modal-backdrop" (click)="closeCancelConfirm()"></div>
+          <div class="pm__modal-card">
+            <div class="pm__modal-title" id="pm-cancel-title">Cancel subscription?</div>
+            <div class="pm__modal-text">This ends access for all members immediately.</div>
+            <div class="pm__modal-alert" *ngIf="cancelError() as err">{{ err }}</div>
+            <div class="pm__modal-actions">
+              <button class="pm__modal-cancel" type="button" (click)="closeCancelConfirm()">Keep plan</button>
+              <button
+                class="pm__modal-confirm"
+                type="button"
+                [disabled]="isCanceling()"
+                (click)="confirmCancelSubscription()"
+              >
+                {{ isCanceling() ? 'Canceling...' : 'Yes, cancel' }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <section class="pm__how" aria-label="How plan change works">
+          <div class="pm__how-title">Before you pay</div>
+          <div class="pm__how-list">
+            <div class="pm__how-item">
+              <div class="pm__how-step">1</div>
+              <div class="pm__how-text">Click <strong>Subscribe</strong> or <strong>Change plan</strong> on the plan you want.</div>
+            </div>
+            <div class="pm__how-item">
+              <div class="pm__how-step">2</div>
+              <div class="pm__how-text">We redirect you to a secure checkout page to complete payment.</div>
+            </div>
+            <div class="pm__how-item">
+              <div class="pm__how-step">3</div>
+              <div class="pm__how-text">After payment, your subscription is activated and you can access the app immediately.</div>
+            </div>
+          </div>
+          <div class="pm__how-foot">Tip: If you already have a plan, changing it will update your access based on the new plan after checkout completes.</div>
+        </section>
+
+        <div class="pm__benefits">
+          <div class="pm__benefit">
+            <div class="pm__benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 2 4 5v6c0 6 4 10 8 11 4-1 8-5 8-11V5l-8-3Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="pm__benefit-title">Secure payment</div>
+              <div class="pm__benefit-sub">SSL 256-bit encryption</div>
+            </div>
+          </div>
+
+          <div class="pm__benefit">
+            <div class="pm__benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 22a9 9 0 1 0-9-9"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M12 7v6l4 2"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="pm__benefit-title">24/7 support</div>
+              <div class="pm__benefit-sub">Dedicated assistance</div>
+            </div>
+          </div>
+
+          <div class="pm__benefit">
+            <div class="pm__benefit-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M4 12a8 8 0 0 1 8-8"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M20 12a8 8 0 0 1-8 8"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M8 12h8"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <div>
+              <div class="pm__benefit-title">Easy cancellation</div>
+              <div class="pm__benefit-sub">No commitment</div>
+            </div>
+          </div>
+        </div>
+
+        <section class="pm__family" aria-label="Family members">
+          <div class="pm__family-head">
+            <div class="pm__family-head-left">
+              <div class="pm__family-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M16 11a3 3 0 1 0-3-3 3 3 0 0 0 3 3Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M6.5 11.5a2.5 2.5 0 1 0-2.5-2.5 2.5 2.5 0 0 0 2.5 2.5Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M20 20c-.6-2.8-3.2-4.8-6-4.8S8.6 17.2 8 20"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M10 20c-.4-2-2.2-3.5-4.4-3.5S1.6 18 1.2 20"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+              <h2 class="pm__family-title">Family members</h2>
+            </div>
+
+            <button
+              *ngIf="isFamilyOwner()"
+              class="pm__family-add"
+              type="button"
+              (click)="toggleAddMember()"
+              [attr.aria-expanded]="isAddMemberOpen()"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M12 5v14"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M5 12h14"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              Add
+            </button>
+          </div>
+
+          <div class="pm__family-note" *ngIf="!isFamilyOwner()">Only the subscription owner can manage members.</div>
+
+          <ng-container *ngIf="isFamilyOwner() && isAddMemberOpen()">
+            <form class="pm__family-form" [formGroup]="addMemberForm" (ngSubmit)="submitAddMember()">
+              <div class="pm__family-form-title">Add a new member</div>
+
+              <input
+                class="pm__family-input"
+                type="email"
+                formControlName="email"
+                placeholder="Email"
+                autocomplete="email"
+              />
+
+              @if (addMemberMessage()) {
+                <p
+                  class="pm__family-message"
+                  [class.pm__family-message--error]="addMemberMessageTone() === 'error'"
+                  [class.pm__family-message--success]="addMemberMessageTone() === 'success'"
+                  role="status"
+                  aria-live="polite"
+                >
+                  {{ addMemberMessage() }}
+                </p>
+              }
+
+              <div class="pm__family-actions">
+                <button class="pm__family-submit" type="submit">Add</button>
+                <button class="pm__family-cancel" type="button" (click)="cancelAddMember()">Cancel</button>
+              </div>
+            </form>
+          </ng-container>
+
+          <div class="pm__family-list">
+            @for (m of familyMembers(); track m.email) {
+              <div class="pm__member" [class.pm__member--active]="m.isActive">
+                <div class="pm__member-left">
+                  <div class="pm__member-avatar" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M12 12.2a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      />
+                      <path
+                        d="M4.5 20c.8-3.2 3.9-5.5 7.5-5.5S18.7 16.8 19.5 20"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <div class="pm__member-text">
+                    <div class="pm__member-name">{{ m.fullName }}</div>
+                    <div class="pm__member-relation">{{ m.relationLabel }}</div>
+                  </div>
+                </div>
+
+                <div class="pm__member-right">
+                  <div class="pm__member-status" [class.pm__member-status--inactive]="!m.isActive">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M20 6 9 17l-5-5"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    {{ m.isActive ? 'Active' : 'Inactive' }}
+                  </div>
+
+                  <button
+                    *ngIf="isFamilyOwner()"
+                    class="pm__member-delete"
+                    type="button"
+                    [disabled]="removingMemberEmail() === m.email"
+                    (click)="deleteMember(m.email)"
+                    [attr.aria-label]="'Delete ' + m.fullName"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="pm__family-footer">Total: {{ activeFamilyMembersCount() }} active members</div>
+        </section>
+
+        <div class="pm__offers-foot">All subscriptions include a 14-day free trial period.</div>
+      </section>
+    </section>
+  </main>
+</div>

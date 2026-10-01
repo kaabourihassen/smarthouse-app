@@ -1,0 +1,92 @@
+<section class="admin__page" aria-label="Manage subscriptions">
+  <div class="admin__head">
+    <div>
+      <div class="admin__kicker">ADMIN</div>
+      <h1 class="admin__title">Manage subscriptions</h1>
+    </div>
+
+    <button class="admin__btn" type="button" (click)="refresh()" [disabled]="isLoading()">Refresh</button>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="admin__error">{{ errorMessage() }}</div>
+  }
+
+  @if (isLoading()) {
+    <div class="admin__card">Loading…</div>
+  }
+
+  @if (!isLoading() && subscriptions().length > 0) {
+    <div class="admin__table">
+    <div class="admin__table-head">
+      <div>User</div>
+      <div>Plan</div>
+      <div>Status</div>
+      <div>Members</div>
+    </div>
+
+    @for (s of subscriptions(); track s.id) {
+      <button
+        type="button"
+        class="admin__table-row admin__table-row-btn"
+        [class.admin__table-row--selected]="selectedSubscriptionId() === s.id"
+        (click)="toggleSubscription(s.id)"
+      >
+        <div>
+          @if (s.user) {
+            <div class="admin__row-title">{{ s.user.firstName }} {{ s.user.lastName }}</div>
+            <div class="admin__row-sub">{{ s.user.email }}</div>
+          } @else {
+            <div class="admin__mono">{{ s.userId }}</div>
+          }
+        </div>
+        <div>{{ s.planId || '—' }}</div>
+        <div>{{ s.status || '—' }}</div>
+        <div>{{ s.membersCount }}</div>
+      </button>
+    }
+    </div>
+
+    @if (selectedSubscription()) {
+      <div class="admin__card admin__members">
+        <div class="admin__members-title">Members</div>
+
+        <div class="admin__table admin__table--compact">
+          <div class="admin__table-head">
+            <div>Name</div>
+            <div>Email</div>
+            <div>Role</div>
+            <div>Active</div>
+            <div>Added</div>
+          </div>
+
+          <div class="admin__table-row">
+            <div class="admin__row-title">Owner</div>
+            <div class="admin__row-sub">{{ selectedSubscription()!.user?.email || '—' }}</div>
+            <div>owner</div>
+            <div>Yes</div>
+            <div>{{ selectedSubscription()!.createdAt | date: 'short' }}</div>
+          </div>
+
+          @for (m of (selectedSubscription()!.members || []); track m.email) {
+            <div class="admin__table-row">
+              <div class="admin__row-title">{{ m.fullName }}</div>
+              <div class="admin__row-sub">{{ m.email }}</div>
+              <div>{{ m.role }}</div>
+              <div>{{ m.isActive ? 'Yes' : 'No' }}</div>
+              <div>{{ m.addedAt | date: 'short' }}</div>
+            </div>
+          }
+        </div>
+
+        @if ((selectedSubscription()!.members || []).length === 0) {
+          <div class="admin__card">No extra members for this subscription.</div>
+        }
+      </div>
+    }
+  }
+
+  @if (!isLoading() && subscriptions().length === 0) {
+    <div class="admin__card">No subscriptions found.</div>
+  }
+</section>

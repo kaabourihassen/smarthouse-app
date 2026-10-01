@@ -1,0 +1,31 @@
+/* Global styles */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --sh-navy-900: #071e34;
+  --sh-navy-800: #0d3352;
+  --sh-surface: #f6fcff;
+  --sh-surface-2: #eaf6fb;
+  --sh-text: #0b2536;
+  --sh-muted: rgba(13, 51, 82, 0.6);
+  --sh-border: rgba(13, 51, 82, 0.12);
+  --sh-shadow: 0 14px 40px rgba(7, 30, 52, 0.18);
+}
+
+body {
+  background-color: var(--sh-navy-900);
+}

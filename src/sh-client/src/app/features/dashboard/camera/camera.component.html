@@ -1,0 +1,374 @@
+<div class="dash">
+  <aside class="dash__sidebar" [class.dash__sidebar--light]="!isDarkSidebar()">
+    <div class="dash__sidebar-inner">
+      <a class="dash__nav-item" routerLink="/dashboard" routerLinkActive="dash__nav-item--active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/history" routerLinkActive="dash__nav-item--active" aria-label="History">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 12a9 9 0 1 0 3-6.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M3 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/devices" routerLinkActive="dash__nav-item--active" aria-label="Devices">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="6" width="13" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M7 15v2h5v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M19.5 10.5l.7.4-.7 1.2-.8-.2a2.5 2.5 0 0 1-.5.3l-.1.8h-1.4l-.1-.8a2.5 2.5 0 0 1-.5-.3l-.8.2-.7-1.2.7-.4a2.4 2.4 0 0 1 0-.6l-.7-.4.7-1.2.8.2c.2-.1.3-.2.5-.3l.1-.8h1.4l.1.8c.2.1.3.2.5.3l.8-.2.7 1.2-.7.4c0 .2.1.4 0 .6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          <path d="M17.4 10a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z" fill="none" stroke="currentColor" stroke-width="1.6" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/energy" routerLinkActive="dash__nav-item--active" aria-label="Energy">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2 4.5 12.4c-.4.5 0 1.2.6 1.2H11L10 22l8.5-10.4c.4-.5 0-1.2-.6-1.2H13V2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/camera" routerLinkActive="dash__nav-item--active" aria-label="Camera">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h3l2-2h6l2 2h3v12H4V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          <path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </a>
+
+      <div class="dash__sidebar-spacer"></div>
+
+      <button class="dash__nav-item dash__nav-item--logout" type="button" (click)="logout()" aria-label="Logout">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 17H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M19 12H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="dash__main">
+    <section class="dash__panel">
+      <header class="cam__header">
+        <div class="cam__header-left">
+          <a class="cam__back" routerLink="/dashboard/recordings" aria-label="Retour">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </a>
+          <div>
+            <h1 class="cam__title">Surveillance Caméra</h1>
+            @if (camera(); as c) {
+              <p class="cam__subtitle">{{ c.roomLabel || 'Living Room' }} · {{ c.name || 'Caméra principale' }}</p>
+            } @else {
+              <p class="cam__subtitle">Living Room · Caméra principale</p>
+            }
+          </div>
+        </div>
+
+        <div class="cam__header-right">
+          <div class="cam__pill">
+            <span class="cam__dot" aria-hidden="true"></span>
+            <span>Détection active</span>
+          </div>
+
+          <a class="cam__notif" routerLink="/dashboard/notifications" aria-label="Notifications">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+              <path d="M9 19a3 3 0 0 0 6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            @if (unreadNotificationsCount() > 0) {
+              <span class="cam__notif-dot" aria-hidden="true"></span>
+            }
+          </a>
+
+          <a class="cam__profile" routerLink="/dashboard/profile" aria-label="Profile">
+            @if (currentUser$ | async; as user) {
+              <span class="cam__avatar" aria-hidden="true">{{ (user.firstName | slice: 0 : 1) | uppercase }}</span>
+              <span class="cam__profile-name">{{ user.firstName }} {{ user.lastName }}</span>
+            } @else {
+              <span class="cam__avatar" aria-hidden="true">U</span>
+              <span class="cam__profile-name">User</span>
+            }
+          </a>
+
+        </div>
+      </header>
+
+      <section class="cam__grid">
+        <div class="cam__left">
+          <div class="cam__video" aria-label="Flux caméra">
+            @if (!isLivePaused()) {
+              <img
+                #liveImg
+                class="cam__video-img"
+                [src]="liveStreamUrl()"
+                (error)="onStreamError()"
+                alt="Flux vidéo en direct"
+              />
+            }
+            <div class="cam__live">
+              <span class="cam__live-dot" aria-hidden="true"></span>
+              <span>EN DIRECT</span>
+            </div>
+
+            <button class="cam__fs" type="button" aria-label="Plein écran">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M9 4H4v5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M15 4h5v5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M4 15v5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+
+            <div class="cam__time">{{ nowLabel() }}</div>
+          </div>
+
+          <div class="cam__bar" aria-label="Contrôles caméra">
+            <div class="cam__bar-left" role="group" aria-label="Contrôles rapides">
+              <button
+                class="cam__cbtn"
+                type="button"
+                [class.cam__cbtn--on]="isRecording()"
+                [disabled]="isRecordingPending()"
+                [attr.aria-pressed]="isRecording()"
+                [attr.aria-busy]="isRecordingPending()"
+                [attr.title]="isRecording() ? 'Arrêter l\'enregistrement' : 'Démarrer l\'enregistrement'"
+                (click)="toggleRecording()"
+                aria-label="Enregistrement"
+              >
+                @if (isRecording() || isRecordingPending()) {
+                  <span class="cam__rec-dot" aria-hidden="true"></span>
+                }
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z" fill="none" stroke="currentColor" stroke-width="2" />
+                  <path d="M16 10l4-2v8l-4-2v-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                </svg>
+              </button>
+
+              <button
+                class="cam__cbtn"
+                type="button"
+                [disabled]="isCapturePending()"
+                [attr.aria-busy]="isCapturePending()"
+                (click)="captureScreenshot()"
+                aria-label="Capture"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20 7h-3l-2-2H9L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                  <path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+              </button>
+
+              <button class="cam__cbtn" type="button" [class.cam__cbtn--off]="!isMicOn()" (click)="isMicOn.set(!isMicOn())" aria-label="Micro">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Z" fill="none" stroke="currentColor" stroke-width="2" />
+                  <path d="M19 11a7 7 0 0 1-14 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <path d="M12 18v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              </button>
+
+              <button class="cam__cbtn" type="button" [class.cam__cbtn--on]="isSoundOn()" (click)="isSoundOn.set(!isSoundOn())" aria-label="Son">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M11 5 6 9H2v6h4l5 4V5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                  <path d="M15.5 8.5a4 4 0 0 1 0 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <path d="M18.5 5.5a8 8 0 0 1 0 13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              </button>
+            </div>
+
+            <button class="cam__detect" type="button" aria-label="Détection de mouvement">
+              <span class="cam__detect-i" aria-hidden="true">i</span>
+              <span>Détection de mouvement</span>
+            </button>
+          </div>
+        </div>
+
+        <aside class="cam__right">
+          <section class="cam__card" aria-label="Statistiques">
+            <h2 class="cam__card-title">Statistiques</h2>
+
+            <div class="cam__stat">
+              <div class="cam__stat-ic" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z" fill="none" stroke="currentColor" stroke-width="2" />
+                  <path d="M16 10l4-2v8l-4-2v-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div>
+                <div class="cam__stat-label">Qualité</div>
+                <div class="cam__stat-value">{{ stats().qualityLabel }}</div>
+              </div>
+            </div>
+
+            <div class="cam__stat">
+              <div class="cam__stat-ic" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0Z" fill="none" stroke="currentColor" stroke-width="2" />
+                </svg>
+              </div>
+              <div>
+                <div class="cam__stat-label">Durée totale</div>
+                <div class="cam__stat-value">{{ stats().totalDurationLabel }}</div>
+              </div>
+            </div>
+
+            <div class="cam__stat">
+              <div class="cam__stat-ic" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 21s7-4.5 7-11a7 7 0 0 0-14 0c0 6.5 7 11 7 11Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div>
+                <div class="cam__stat-label">Détections</div>
+                <div class="cam__stat-value">{{ stats().detectionsToday }} aujourd'hui</div>
+              </div>
+            </div>
+
+            <div class="cam__stat">
+              <div class="cam__stat-ic" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 3v18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <path d="M7 7h10M7 12h10M7 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              </div>
+              <div>
+                <div class="cam__stat-label">Stockage</div>
+                <div class="cam__stat-value">{{ stats().storageLabel }}</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="cam__card" aria-label="Actions rapides">
+            <h2 class="cam__card-title">Actions rapides</h2>
+            <button class="cam__action cam__action--primary" type="button" (click)="downloadLatestVideo()">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path d="M8 11l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              <span>Visionner / Télécharger dernière vidéo</span>
+            </button>
+
+            <a class="cam__action" routerLink="/dashboard/recordings">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z" fill="none" stroke="currentColor" stroke-width="2" />
+                <path d="M16 10l4-2v8l-4-2v-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+              </svg>
+              <span>Voir tous les enregistrements</span>
+            </a>
+          </section>
+
+          <section class="cam__card" aria-label="Enregistrements vidéo récents">
+            <div class="cam__card-header-row">
+              <h2 class="cam__card-title">Vidéos enregistrées</h2>
+              <a class="cam__card-link" routerLink="/dashboard/recordings">Tout voir</a>
+            </div>
+
+            @if (recordings().length) {
+              <div class="cam__recs" aria-label="Recent recordings list">
+                @for (r of recordings().slice(0, 4); track r.id) {
+                  <article class="cam__rec-item" (click)="playRecording(r)">
+                    <div class="cam__rec-thumb" [style.background-image]="thumbBg(r)">
+                      <div class="cam__rec-play-overlay">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M8 5v14l11-7z" fill="currentColor" />
+                        </svg>
+                      </div>
+                      <span class="cam__rec-duration">{{ r.durationLabel }}</span>
+                    </div>
+                    <div class="cam__rec-info">
+                      <div class="cam__rec-title">{{ r.title }}</div>
+                      <div class="cam__rec-meta">{{ r.timeLabel }} · {{ r.sizeLabel }}</div>
+                    </div>
+                  </article>
+                }
+              </div>
+            } @else {
+              <div class="cam__empty">Aucun enregistrement vidéo disponible.</div>
+            }
+          </section>
+
+          <section class="cam__card" aria-label="Screenshots">
+            <h2 class="cam__card-title">Screenshots</h2>
+
+            @if (screenshots().length) {
+              <div class="cam__shots" aria-label="Screenshot list">
+                @for (s of screenshots(); track s.id) {
+                  <a class="cam__shot" [href]="s.fileUrl" target="_blank" rel="noopener" aria-label="Open screenshot">
+                    <img class="cam__shot-img" [src]="s.fileUrl" alt="" loading="lazy" decoding="async" />
+                    <div class="cam__shot-meta">{{ s.timeLabel }} · {{ s.sizeLabel }}</div>
+                  </a>
+                }
+              </div>
+            } @else {
+              <div class="cam__empty">No screenshots yet.</div>
+            }
+          </section>
+        </aside>
+      </section>
+    </section>
+  </main>
+</div>
+
+@if (activeRecording(); as rec) {
+  <div class="cam__modal-backdrop" (click)="closePlayer()">
+    <div class="cam__modal-dialog" (click)="$event.stopPropagation()">
+      <header class="cam__modal-header">
+        <div>
+          <h3 class="cam__modal-title">{{ rec.title }}</h3>
+          <p class="cam__modal-sub">{{ rec.roomLabel || 'Living Room' }} · {{ rec.dateLabel }} {{ rec.timeLabel }} · Durée: {{ rec.durationLabel }} ({{ rec.sizeLabel }})</p>
+        </div>
+        <button class="cam__modal-close" type="button" (click)="closePlayer()" aria-label="Fermer la vidéo">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+      </header>
+
+      <div class="cam__modal-video">
+        @if (isLoadingVideo()) {
+          <div class="cam__modal-loading">
+            <div class="cam__spinner"></div>
+            <span>Chargement de la vidéo en cours...</span>
+          </div>
+        } @else if (videoBlobUrl()) {
+          <video [src]="videoBlobUrl()" controls autoplay loop class="cam__video-player"></video>
+        } @else if (videoError()) {
+          <div class="cam__modal-error">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span>{{ videoError() }}</span>
+          </div>
+        } @else {
+          <div class="cam__modal-empty">
+            <span>Aperçu indisponible ({{ rec.durationLabel }})</span>
+          </div>
+        }
+      </div>
+
+      <footer class="cam__modal-footer">
+        @if (videoBlobUrl(); as blobUrl) {
+          <a [href]="blobUrl" [download]="rec.title + '.mp4'" class="cam__btn cam__btn--primary">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3v10M8 11l4 4 4-4M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>Télécharger la vidéo MP4</span>
+          </a>
+        }
+        <button class="cam__btn cam__btn--ghost" type="button" (click)="closePlayer()">Fermer</button>
+      </footer>
+    </div>
+  </div>
+}

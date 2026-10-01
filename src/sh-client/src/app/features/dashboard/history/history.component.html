@@ -1,0 +1,248 @@
+<div class="dash">
+  <!-- Sidebar -->
+  <aside class="dash__sidebar" [class.dash__sidebar--light]="!isDarkSidebar()">
+    <div class="dash__sidebar-inner">
+      <a class="dash__nav-item" routerLink="/dashboard" routerLinkActive="dash__nav-item--active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/history" routerLinkActive="dash__nav-item--active" aria-label="History">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 12a9 9 0 1 0 3-6.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M3 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/devices" routerLinkActive="dash__nav-item--active" aria-label="Devices">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="6" width="13" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M7 15v2h5v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M19.5 10.5l.7.4-.7 1.2-.8-.2a2.5 2.5 0 0 1-.5.3l-.1.8h-1.4l-.1-.8a2.5 2.5 0 0 1-.5-.3l-.8.2-.7-1.2.7-.4a2.4 2.4 0 0 1 0-.6l-.7-.4.7-1.2.8.2c.2-.1.3-.2.5-.3l.1-.8h1.4l.1.8c.2.1.3.2.5.3l.8-.2.7 1.2-.7.4c0 .2.1.4 0 .6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          <path d="M17.4 10a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z" fill="none" stroke="currentColor" stroke-width="1.6" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/energy" routerLinkActive="dash__nav-item--active" aria-label="Energy">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2 4.5 12.4c-.4.5 0 1.2.6 1.2H11L10 22l8.5-10.4c.4-.5 0-1.2-.6-1.2H13V2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/camera" routerLinkActive="dash__nav-item--active" aria-label="Camera">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h3l2-2h6l2 2h3v12H4V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          <path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </a>
+
+      <div class="dash__sidebar-spacer"></div>
+
+      <button class="dash__nav-item dash__nav-item--logout" type="button" (click)="logout()" aria-label="Logout">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 17H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M19 12H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main panel -->
+  <main class="dash__main">
+    <section class="dash__panel">
+      <header class="hist__header">
+        <div class="hist__header-left">
+          <h1 class="hist__title">Historique</h1>
+          <p class="hist__subtitle">Consultez toutes les actions de votre maison intelligente</p>
+        </div>
+
+        <div class="hist__header-right">
+          <a class="hist__notif" routerLink="/dashboard/notifications" aria-label="Notifications">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+              <path d="M9 19a3 3 0 0 0 6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            @if (unreadNotificationsCount() > 0) {
+              <span class="hist__notif-dot" aria-hidden="true"></span>
+            }
+          </a>
+
+          <a class="hist__profile" routerLink="/dashboard/profile" aria-label="Profile">
+            @if (currentUser$ | async; as user) {
+              <span class="hist__avatar" aria-hidden="true">{{ (user.firstName | slice: 0 : 1) | uppercase }}</span>
+              <span class="hist__profile-name">{{ user.firstName }} {{ user.lastName }}</span>
+            } @else {
+              <span class="hist__avatar" aria-hidden="true">U</span>
+              <span class="hist__profile-name">Utilisateur</span>
+            }
+          </a>
+        </div>
+      </header>
+
+      <section class="hist__filters" aria-label="Filtrer par catégorie">
+        <div class="hist__filters-head">
+          <div class="hist__filters-title">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M3 4h18l-7 8v7l-4 1v-8L3 4Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <h2>Filtrer par catégorie</h2>
+          </div>
+          <button type="button" class="hist__reset" (click)="resetFilters()">Réinitialiser</button>
+        </div>
+
+        <div class="hist__chips" role="tablist" aria-label="Catégories">
+          <button type="button" class="hist__chip" [class.hist__chip--active]="selectedCategory() === 'all'" (click)="setCategory('all')">
+            <span class="hist__chip-icon" aria-hidden="true">📋</span>
+            <span>Tout</span>
+          </button>
+          <button type="button" class="hist__chip" [class.hist__chip--active]="selectedCategory() === 'devices'" (click)="setCategory('devices')">
+            <span class="hist__chip-icon" aria-hidden="true">💡</span>
+            <span>Appareils</span>
+          </button>
+          <button type="button" class="hist__chip" [class.hist__chip--active]="selectedCategory() === 'security'" (click)="setCategory('security')">
+            <span class="hist__chip-icon" aria-hidden="true">🔒</span>
+            <span>Sécurité</span>
+          </button>
+          <button type="button" class="hist__chip" [class.hist__chip--active]="selectedCategory() === 'energy'" (click)="setCategory('energy')">
+            <span class="hist__chip-icon" aria-hidden="true">⚡</span>
+            <span>Énergie</span>
+          </button>
+          <button type="button" class="hist__chip" [class.hist__chip--active]="selectedCategory() === 'automation'" (click)="setCategory('automation')">
+            <span class="hist__chip-icon" aria-hidden="true">🤖</span>
+            <span>Automatisation</span>
+          </button>
+          <button type="button" class="hist__chip" [class.hist__chip--active]="selectedCategory() === 'system'" (click)="setCategory('system')">
+            <span class="hist__chip-icon" aria-hidden="true">⚙️</span>
+            <span>Système</span>
+          </button>
+          <button type="button" class="hist__chip" [class.hist__chip--active]="selectedCategory() === 'users'" (click)="setCategory('users')">
+            <span class="hist__chip-icon" aria-hidden="true">👤</span>
+            <span>Utilisateurs</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="hist__stats" aria-label="Stats">
+        <article class="hist__stat">
+          <div class="hist__stat-head">
+            <span>Aujourd'hui</span>
+            <svg class="hist__stat-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0Z" fill="none" stroke="currentColor" stroke-width="2" />
+            </svg>
+          </div>
+          <div class="hist__stat-value">{{ stats().today }}</div>
+          <div class="hist__stat-sub">actions</div>
+        </article>
+        <article class="hist__stat">
+          <div class="hist__stat-head">
+            <span>Cette semaine</span>
+            <svg class="hist__stat-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0Z" fill="none" stroke="currentColor" stroke-width="2" />
+            </svg>
+          </div>
+          <div class="hist__stat-value">{{ stats().week }}</div>
+          <div class="hist__stat-sub">actions</div>
+        </article>
+        <article class="hist__stat">
+          <div class="hist__stat-head">
+            <span>Ce mois</span>
+            <svg class="hist__stat-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0Z" fill="none" stroke="currentColor" stroke-width="2" />
+            </svg>
+          </div>
+          <div class="hist__stat-value">{{ stats().month }}</div>
+          <div class="hist__stat-sub">actions</div>
+        </article>
+        <article class="hist__stat">
+          <div class="hist__stat-head">
+            <span>Plus fréquent</span>
+            <span class="hist__stat-icon" aria-hidden="true">💡</span>
+          </div>
+          <div class="hist__stat-value">{{ stats().most || '—' }}</div>
+          <div class="hist__stat-sub">{{ stats().mostPct }}% des actions</div>
+        </article>
+      </section>
+
+      <section class="hist__timeline" aria-label="Chronologie">
+        <div class="hist__timeline-head">
+          <div class="hist__timeline-title">
+            <svg class="hist__timeline-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0Z" fill="none" stroke="currentColor" stroke-width="2" />
+            </svg>
+            <h2>Chronologie ({{ filtered().length }})</h2>
+          </div>
+        </div>
+
+        <div class="hist__list">
+          @for (e of filtered(); track e.id) {
+            <article class="hist__row">
+              <div class="hist__row-icon" [attr.data-cat]="e.category" aria-hidden="true">
+                @switch (e.icon) {
+                  @case ('bulb') { 💡 }
+                  @case ('lock') { 🔒 }
+                  @case ('bolt') { ⚡ }
+                  @case ('robot') { 🤖 }
+                  @case ('gear') { ⚙️ }
+                  @case ('user') { 👤 }
+                  @default { 🕒 }
+                }
+              </div>
+
+              <div class="hist__row-body">
+                <div class="hist__row-top">
+                  <div>
+                    <div class="hist__row-title">{{ e.title }}</div>
+                    <div class="hist__row-sub">{{ e.subtitle }}</div>
+                  </div>
+
+                  <div class="hist__row-right">
+                    <span class="hist__row-time">{{ e.timeLabel }}</span>
+                    <svg class="hist__row-chevron" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="hist__meta">
+                  @if (e.actorName) {
+                    <span class="hist__meta-item">👤 {{ e.actorName }}</span>
+                  }
+                  @if (e.locationLabel) {
+                    <span class="hist__meta-item">🏠 {{ e.locationLabel }}</span>
+                  }
+                  @if (e.detail) {
+                    <span class="hist__meta-dot" aria-hidden="true">•</span>
+                    <span class="hist__meta-detail">{{ e.detail }}</span>
+                  }
+                </div>
+              </div>
+            </article>
+          }
+
+          @if (filtered().length === 0) {
+            <div class="hist__empty">Aucune action pour le moment.</div>
+          }
+        </div>
+      </section>
+    </section>
+  </main>
+</div>

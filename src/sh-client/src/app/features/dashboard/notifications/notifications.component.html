@@ -1,0 +1,225 @@
+<div class="dash">
+  <aside class="dash__sidebar" [class.dash__sidebar--light]="!isDarkSidebar()">
+    <div class="dash__sidebar-inner">
+      <a class="dash__nav-item" routerLink="/dashboard" routerLinkActive="dash__nav-item--active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/history" routerLinkActive="dash__nav-item--active" aria-label="History">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 12a9 9 0 1 0 3-6.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M3 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/devices" routerLinkActive="dash__nav-item--active" aria-label="Devices">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="6" width="13" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M7 15v2h5v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M19.5 10.5l.7.4-.7 1.2-.8-.2a2.5 2.5 0 0 1-.5.3l-.1.8h-1.4l-.1-.8a2.5 2.5 0 0 1-.5-.3l-.8.2-.7-1.2.7-.4a2.4 2.4 0 0 1 0-.6l-.7-.4.7-1.2.8.2c.2-.1.3-.2.5-.3l.1-.8h1.4l.1.8c.2.1.3.2.5.3l.8-.2.7 1.2-.7.4c0 .2.1.4 0 .6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          <path d="M17.4 10a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z" fill="none" stroke="currentColor" stroke-width="1.6" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/energy" routerLinkActive="dash__nav-item--active" aria-label="Energy">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2 4.5 12.4c-.4.5 0 1.2.6 1.2H11L10 22l8.5-10.4c.4-.5 0-1.2-.6-1.2H13V2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/camera" routerLinkActive="dash__nav-item--active" aria-label="Camera">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h3l2-2h6l2 2h3v12H4V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          <path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </a>
+
+      <div class="dash__sidebar-spacer"></div>
+
+      <button class="dash__nav-item dash__nav-item--logout" type="button" (click)="logout()" aria-label="Logout">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 17H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M19 12H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="dash__main">
+    <section class="dash__panel">
+      <div class="notifications">
+        <header class="notifications__hero">
+          <a class="notifications__back" routerLink="/dashboard">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 18 9 12l6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>Retour au dashboard</span>
+          </a>
+
+          <div class="notifications__hero-row">
+            <div class="notifications__hero-left">
+              <div class="notifications__hero-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                  <path d="M9 19a3 3 0 0 0 6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              </div>
+
+              <div class="notifications__hero-text">
+                <h1 class="notifications__title">Notifications</h1>
+                <p class="notifications__subtitle">{{ unreadCount() }} notifications non lues</p>
+              </div>
+            </div>
+
+            <button type="button" class="notifications__mark" (click)="markAllAsRead()" [disabled]="unreadCount() === 0">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span>Tout marquer comme lu</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="notifications__content">
+          <section class="notifications__filters">
+            <div class="notifications__filters-title">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 4h18l-7 8v7l-4 1v-8L3 4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+              </svg>
+              <h2>Filtrer par catégorie</h2>
+            </div>
+
+            <div class="notifications__chips" role="tablist" aria-label="Catégories">
+              <button type="button" class="notifications__chip" [class.notifications__chip--active]="selectedCategory() === 'all'" (click)="setCategory('all')">
+                Toutes ({{ counts().all }})
+              </button>
+
+              <button type="button" class="notifications__chip" [class.notifications__chip--active]="selectedCategory() === 'security'" (click)="setCategory('security')">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 2 20 6v6c0 5-3.5 9.4-8 10-4.5-.6-8-5-8-10V6l8-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                </svg>
+                Sécurité ({{ counts().security }})
+              </button>
+
+              <button type="button" class="notifications__chip" [class.notifications__chip--active]="selectedCategory() === 'alerts'" (click)="setCategory('alerts')">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 9v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <path d="M12 17h.01" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+                  <path d="M10.3 3.4 1.9 18.1A2 2 0 0 0 3.6 21h16.8a2 2 0 0 0 1.7-2.9L13.7 3.4a2 2 0 0 0-3.4 0Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                </svg>
+                Alertes ({{ counts().alerts }})
+              </button>
+
+              <button type="button" class="notifications__chip" [class.notifications__chip--active]="selectedCategory() === 'system'" (click)="setCategory('system')">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" fill="none" stroke="currentColor" stroke-width="2" />
+                  <path d="M19.4 15a7.9 7.9 0 0 0 .1-1 7.9 7.9 0 0 0-.1-1l2-1.6-2-3.4-2.4 1a8.2 8.2 0 0 0-1.7-1l-.4-2.6H10l-.4 2.6a8.2 8.2 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.9 7.9 0 0 0-.1 1c0 .3 0 .7.1 1l-2 1.6 2 3.4 2.4-1a8.2 8.2 0 0 0 1.7 1l.4 2.6h4.2l.4-2.6a8.2 8.2 0 0 0 1.7-1l2.4 1 2-3.4-2-1.6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                </svg>
+                Système ({{ counts().system }})
+              </button>
+            </div>
+          </section>
+
+          <section class="notifications__list" aria-label="Liste des notifications">
+            @for (n of filteredNotifications(); track n.id) {
+              <article class="notifications__card" [attr.data-type]="n.type" [attr.data-tone]="n.tone" [class.notifications__card--unread]="n.status === 'unread'">
+                <div class="notifications__card-icon" [attr.data-tone]="n.tone" aria-hidden="true">
+                  @if (n.icon === 'info') {
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" fill="none" stroke="currentColor" stroke-width="2" />
+                      <path d="M12 11v5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                      <path d="M12 8h.01" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+                    </svg>
+                  }
+                  @if (n.icon === 'drop') {
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12 2s7 7.4 7 13a7 7 0 0 1-14 0C5 9.4 12 2 12 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                    </svg>
+                  }
+                  @if (n.icon === 'check') {
+                    <svg viewBox="0 0 24 24">
+                      <path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  }
+                  @if (n.icon === 'alert') {
+                    <svg viewBox="0 0 24 24">
+                      <path d="M10.3 3.4 1.9 18.1A2 2 0 0 0 3.6 21h16.8a2 2 0 0 0 1.7-2.9L13.7 3.4a2 2 0 0 0-3.4 0Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                      <path d="M12 9v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                      <path d="M12 17h.01" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+                    </svg>
+                  }
+                  @if (n.icon === 'bolt') {
+                    <svg viewBox="0 0 24 24">
+                      <path d="M13 2 4 14h7l-1 8 10-14h-7l0-6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                    </svg>
+                  }
+                  @if (n.icon === 'camera') {
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4 7h3l2-2h6l2 2h3v12H4V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                      <path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                  }
+                  @if (n.icon === 'thermo') {
+                    <svg viewBox="0 0 24 24">
+                      <path d="M14 14.76V5a2 2 0 1 0-4 0v9.76a4 4 0 1 0 4 0Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                      <path d="M10 11h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                  }
+                  @if (n.icon === 'shield') {
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12 2 20 6v6c0 5-3.5 9.4-8 10-4.5-.6-8-5-8-10V6l8-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                    </svg>
+                  }
+                  @if (n.icon === 'tip') {
+                    <svg viewBox="0 0 24 24">
+                      <path d="M9 18h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                      <path d="M10 22h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                      <path d="M8 10a4 4 0 1 1 8 0c0 1.7-.8 2.8-1.8 3.8-.6.6-1.2 1.2-1.2 2.2h-2c0-1-.6-1.6-1.2-2.2C8.8 12.8 8 11.7 8 10Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                    </svg>
+                  }
+                </div>
+
+                <div class="notifications__card-body">
+                  <div class="notifications__card-top">
+                    <div class="notifications__card-title">
+                      <h3>{{ n.title }}</h3>
+                      @if (n.status === 'unread') {
+                        <span class="notifications__unread-dot" aria-hidden="true"></span>
+                      }
+                    </div>
+
+                    <button type="button" class="notifications__menu" aria-label="Menu">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 6h.01M12 12h.01M12 18h.01" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <p class="notifications__message">{{ n.message }}</p>
+
+                  <div class="notifications__meta">
+                    <div class="notifications__time">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" fill="none" stroke="currentColor" stroke-width="2" />
+                        <path d="M12 6v6l4 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <time>{{ n.timeLabel }}</time>
+                    </div>
+
+                    @if (n.urgent) {
+                      <span class="notifications__urgent">Urgent</span>
+                    }
+                  </div>
+                </div>
+              </article>
+            }
+          </section>
+        </main>
+      </div>
+    </section>
+  </main>
+</div>

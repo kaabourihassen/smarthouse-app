@@ -1,0 +1,183 @@
+.auth-layout {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #1c2b3a;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+
+  // ------ Decorative background circles ------
+  &__circle {
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+
+    &--top-left {
+      width: 420px;
+      height: 420px;
+      top: -120px;
+      left: -100px;
+      background-color: rgba(55, 120, 160, 0.28);
+    }
+
+    &--bottom-left {
+      width: 260px;
+      height: 260px;
+      bottom: -60px;
+      left: 40px;
+      background-color: rgba(55, 120, 160, 0.22);
+    }
+  }
+
+  // ------ Smart house image ------
+  &__image-wrapper {
+    position: absolute;
+    left: 1%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 54%;
+    max-width: 660px;
+    pointer-events: none;
+  }
+
+  &__image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  // ------ SVG wave separator ------
+  &__wave {
+    position: absolute;
+    right: 36%;
+    top: 0;
+    bottom: 0;
+    width: 22%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  // ------ White panel (right side) ------
+  &__panel {
+    position: relative;
+    margin-left: auto;
+    width: 42%;
+    min-height: 100vh;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 56px 60px 48px;
+    z-index: 1;
+  }
+
+  // ------ Content wrapper ------
+  &__content {
+    max-width: 360px;
+    width: 100%;
+  }
+
+  // ------ Hamburger menu ------
+  &__menu-btn {
+    position: absolute;
+    top: 28px;
+    right: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #1a1a1a;
+    padding: 4px;
+    z-index: 3;
+
+    &:hover {
+      color: #6b7280;
+    }
+  }
+
+  // ------ Decorative arc lines (bottom-right) ------
+  &__arc-lines {
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    width: 160px;
+    height: 160px;
+    z-index: 2;
+  }
+
+  &__arc {
+    position: absolute;
+    border: 1.5px solid #d1d5db;
+    border-radius: 50%;
+    bottom: 0;
+    right: 0;
+
+    &--1 {
+      width: 80px;
+      height: 80px;
+    }
+
+    &--2 {
+      width: 120px;
+      height: 120px;
+    }
+
+    &--3 {
+      width: 160px;
+      height: 160px;
+    }
+  }
+
+  // ------ Responsive ------
+  @media (max-width: 1024px) {
+    &__image-wrapper {
+      left: 1%;
+      width: 40%;
+    }
+
+    &__wave {
+      right: 36%;
+      width: 20%;
+    }
+
+    &__panel {
+      width: 40%;
+      padding: 48px 36px 48px 40px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+
+    &__wave {
+      display: none;
+    }
+
+    &__image-wrapper {
+      position: relative;
+      left: auto;
+      top: auto;
+      transform: none;
+      width: 80%;
+      max-width: 360px;
+      margin: 32px auto 0;
+      z-index: 2;
+    }
+
+    &__panel {
+      width: 100%;
+      min-height: auto;
+      padding: 36px 28px;
+      border-radius: 24px 24px 0 0;
+      margin-top: -40px;
+    }
+
+    &__content {
+      max-width: 100%;
+    }
+  }
+}

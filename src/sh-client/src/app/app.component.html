@@ -1,0 +1,21 @@
+<router-outlet />
+
+<div class="sh-toasts" aria-live="polite" aria-relevant="additions text">
+  @for (t of notificationsService.toastList(); track t.id) {
+    <div class="sh-toast" [attr.data-tone]="t.tone">
+      <div class="sh-toast__body">
+        <div class="sh-toast__title">{{ t.title }}</div>
+        <div class="sh-toast__msg">{{ t.message }}</div>
+      </div>
+
+      <button
+        class="sh-toast__close"
+        type="button"
+        (click)="notificationsService.dismissToast(t.id)"
+        aria-label="Close"
+      >
+        ✕
+      </button>
+    </div>
+  }
+</div>

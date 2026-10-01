@@ -1,0 +1,527 @@
+<div class="dash">
+  <!-- Sidebar -->
+  <aside class="dash__sidebar" [class.dash__sidebar--light]="!isDarkSidebar()">
+    <div class="dash__sidebar-inner">
+      <a class="dash__nav-item" routerLink="/dashboard" routerLinkActive="dash__nav-item--active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/history" routerLinkActive="dash__nav-item--active" aria-label="History">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 12a9 9 0 1 0 3-6.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M3 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/devices" routerLinkActive="dash__nav-item--active" aria-label="Devices">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="6" width="13" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M7 15v2h5v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M19.5 10.5l.7.4-.7 1.2-.8-.2a2.5 2.5 0 0 1-.5.3l-.1.8h-1.4l-.1-.8a2.5 2.5 0 0 1-.5-.3l-.8.2-.7-1.2.7-.4a2.4 2.4 0 0 1 0-.6l-.7-.4.7-1.2.8.2c.2-.1.3-.2.5-.3l.1-.8h1.4l.1.8c.2.1.3.2.5.3l.8-.2.7 1.2-.7.4c0 .2.1.4 0 .6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          <path d="M17.4 10a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z" fill="none" stroke="currentColor" stroke-width="1.6" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/energy" routerLinkActive="dash__nav-item--active" aria-label="Energy">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2 4.5 12.4c-.4.5 0 1.2.6 1.2H11L10 22l8.5-10.4c.4-.5 0-1.2-.6-1.2H13V2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/camera" routerLinkActive="dash__nav-item--active" aria-label="Camera">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h3l2-2h6l2 2h3v12H4V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          <path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </a>
+
+      <div class="dash__sidebar-spacer"></div>
+
+      <button class="dash__nav-item dash__nav-item--logout" type="button" (click)="logout()" aria-label="Logout">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 17H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M19 12H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main panel -->
+  <main class="dash__main">
+    <section class="dash__panel">
+      <header class="dm__header">
+        <div class="dm__header-left">
+          <a class="dm__back" routerLink="/dashboard" aria-label="Back">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M15 18l-6-6 6-6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+
+          <div>
+            <h1 class="dm__title">Device management</h1>
+            <p class="dm__subtitle">Control all your connected devices</p>
+
+            <button class="dm__add" type="button" (click)="toggleAddForm()">
+              <span class="dm__add-plus" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 5v14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  <path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+              </span>
+              Add device
+            </button>
+          </div>
+        </div>
+
+        <div class="dm__header-right">
+
+          <a class="dm__notif" routerLink="/dashboard/notifications" aria-label="Notifications">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linejoin="round"
+              />
+              <path d="M9 19a3 3 0 0 0 6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            @if (unreadNotificationsCount() > 0) {
+              <span class="dm__notif-dot" aria-hidden="true"></span>
+            }
+          </a>
+
+          <a class="dm__profile" routerLink="/dashboard/profile" aria-label="Profile">
+            @if (currentUser$ | async; as user) {
+              <span class="dm__avatar" aria-hidden="true">{{ (user.firstName | slice: 0 : 1) | uppercase }}</span>
+              <span class="dm__profile-name">{{ user.firstName }} {{ user.lastName }}</span>
+            } @else {
+              <span class="dm__avatar" aria-hidden="true">U</span>
+              <span class="dm__profile-name">User</span>
+            }
+          </a>
+        </div>
+      </header>
+
+      @if (isAddFormOpen()) {
+        <section class="dm__form" aria-label="Add device form">
+          <div class="dm__form-head">
+            <div>
+              <div class="dm__form-title">Add a new device</div>
+              <div class="dm__form-sub">Fill the details below</div>
+            </div>
+
+            <button class="dm__form-close" type="button" (click)="cancelAddForm()" aria-label="Close">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path d="M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
+
+          <form class="dm__form-grid" [formGroup]="addDeviceForm" (ngSubmit)="submitAddDevice()">
+            <label class="dm__field">
+              <span class="dm__field-label">Device name</span>
+              <input class="dm__input" type="text" formControlName="title" placeholder="e.g. Air conditioning" />
+            </label>
+
+            <label class="dm__field">
+              <span class="dm__field-label">Room</span>
+              <select class="dm__input" formControlName="room">
+                @for (r of roomsList(); track r.key) {
+                  <option [value]="r.key">{{ r.label }}</option>
+                }
+              </select>
+            </label>
+
+            <label class="dm__field">
+              <span class="dm__field-label">Type</span>
+              <select class="dm__input" formControlName="type">
+                <option value="lighting">Lighting</option>
+                <option value="airConditioning">Air conditioning</option>
+                <option value="heating">Heating</option>
+                <option value="fan">Fan</option>
+              </select>
+            </label>
+
+            <label class="dm__field">
+              <span class="dm__field-label">Initial value</span>
+              <input class="dm__input" type="number" formControlName="valueNumber" />
+              <span class="dm__field-hint">Use deg C for heating/AC, % for lighting</span>
+            </label>
+
+            <label class="dm__field">
+              <span class="dm__field-label">Consumption (kWh)</span>
+              <input class="dm__input" type="number" step="0.1" formControlName="consumptionKwh" />
+            </label>
+
+            <label class="dm__field dm__field--switch">
+              <span class="dm__field-label">Power</span>
+              <input type="checkbox" formControlName="on" />
+              <span class="dm__switch" aria-hidden="true"></span>
+            </label>
+
+            <div class="dm__form-actions">
+              <button class="dm__btn dm__btn--ghost" type="button" (click)="cancelAddForm()">Cancel</button>
+              <button class="dm__btn dm__btn--primary" type="submit">Add</button>
+            </div>
+          </form>
+        </section>
+      }
+
+      <section class="dm__kpis" aria-label="Summary">
+        @for (kpi of kpis(); track kpi.key) {
+          <article class="dm__kpi">
+            <div class="dm__kpi-top">
+              <div class="dm__kpi-icon" aria-hidden="true">
+                @if (kpi.icon === 'devices') {
+                  <svg viewBox="0 0 24 24">
+                    <rect x="3" y="7" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="2" />
+                    <path d="M7 17v2h6v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <rect x="18" y="9" width="3" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="2" />
+                  </svg>
+                }
+                @if (kpi.icon === 'power') {
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 2v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path
+                      d="M6.2 6.2a8 8 0 1 0 11.6 0"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                }
+                @if (kpi.icon === 'power-off') {
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 2v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path
+                      d="M6.2 6.2a8 8 0 1 0 11.6 0"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <path d="M4 4l16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                }
+                @if (kpi.icon === 'bolt') {
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M13 2 4.5 12.4c-.4.5 0 1.2.6 1.2H11L10 22l8.5-10.4c.4-.5 0-1.2-.6-1.2H13V2Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                }
+              </div>
+              <div class="dm__kpi-label">{{ kpi.label }}</div>
+            </div>
+            <div class="dm__kpi-value">{{ kpi.value }}</div>
+            <div class="dm__kpi-hint">{{ kpi.hint }}</div>
+          </article>
+        }
+      </section>
+
+      <section class="dm__filters" aria-label="Filters">
+        <div class="dm__filter">
+          <span class="dm__filter-label">Room:</span>
+          <div class="dm__chips" role="group" aria-label="Room">
+            @for (r of rooms(); track r.key) {
+              <button
+                class="dm__chip"
+                type="button"
+                [class.dm__chip--active]="selectedRoom() === r.key"
+                (click)="selectedRoom.set(r.key)"
+              >
+                {{ r.label }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <div class="dm__filter">
+          <span class="dm__filter-label">Type:</span>
+          <div class="dm__chips" role="group" aria-label="Type">
+            @for (t of types; track t.key) {
+              <button
+                class="dm__chip"
+                type="button"
+                [class.dm__chip--active]="selectedType() === t.key"
+                (click)="selectedType.set(t.key)"
+              >
+                {{ t.label }}
+              </button>
+            }
+          </div>
+        </div>
+      </section>
+
+      <section class="dm__history" aria-label="Sensor history">
+        <div class="dm__history-head">
+          <div>
+            <div class="dm__history-title">Sensor history</div>
+            <div class="dm__history-sub">Latest readings from the selected device</div>
+          </div>
+
+          <div class="dm__history-actions">
+            @if (selectedDevice(); as sd) {
+              <div class="dm__history-device">{{ displayTitle(sd) }} - {{ roomLabel(sd.room) }}</div>
+              @if (timeline().length > 8) {
+                <button
+                  class="dm__history-refresh"
+                  type="button"
+                  (click)="showAllTimeline.set(!showAllTimeline())"
+                >
+                  {{ showAllTimeline() ? 'Show less' : 'Show all' }}
+                </button>
+              }
+              <button class="dm__history-refresh" type="button" (click)="loadTimeline(sd.id)">
+                Refresh
+              </button>
+            }
+          </div>
+        </div>
+
+        @if (!selectedDevice()) {
+          <div class="dm__history-empty">Select a device card to view its sensor history.</div>
+        } @else if (isLoadingTimeline()) {
+          <div class="dm__history-state">Loading history...</div>
+        } @else if (timelineError()) {
+          <div class="dm__history-state dm__history-state--error">{{ timelineError() }}</div>
+        } @else if (timeline().length === 0) {
+          <div class="dm__history-state">No history yet for this sensor.</div>
+        } @else {
+          <div class="dm__history-table" role="table" aria-label="Sensor history table">
+            <div class="dm__history-row dm__history-row--head" role="row">
+              <div class="dm__history-cell" role="columnheader">Time</div>
+              <div class="dm__history-cell" role="columnheader">Value</div>
+              <div class="dm__history-cell" role="columnheader">State</div>
+            </div>
+            @for (p of timelinePreview(); track p.id) {
+              <div class="dm__history-row" role="row">
+                <div class="dm__history-cell dm__history-time" role="cell">{{ p.createdAt | date: 'short' }}</div>
+                <div class="dm__history-cell dm__history-value" role="cell">{{ p.value }}</div>
+                <div class="dm__history-cell" role="cell">
+                  <span class="dm__history-pill" [class.dm__history-pill--off]="!p.on">
+                  {{ p.on ? 'On' : 'Off' }}
+                  </span>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </section>
+
+      <section class="dm__content" aria-label="Devices">
+        <section class="dm__grid" aria-label="Devices">
+          @for (d of filteredDevices(); track d.id) {
+            <article
+              class="dm__card"
+              [class.dm__card--muted]="d.muted"
+              [class.dm__card--tint]="!d.muted"
+              (click)="openDevice(d.id)"
+            >
+            <div class="dm__card-top">
+              <div class="dm__card-icon" aria-hidden="true">
+                @if (d.icon === 'wind') {
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M3 8h10a3 3 0 1 0-3-3"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M3 12h14a3 3 0 1 1-3 3"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M3 16h8"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                }
+                @if (d.icon === 'bulb') {
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M9 18h6"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M10 22h4"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M8 10a4 4 0 1 1 8 0c0 2-1.2 2.9-2 4-.4.6-.6 1.1-.7 2H10.7c-.1-.9-.3-1.4-.7-2-.8-1.1-2-2-2-4Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                }
+                @if (d.icon === 'fan') {
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    />
+                    <path
+                      d="M12 12c-3.5-1-6.5.5-7 3.5 2.8 1.2 5.3.6 7-3.5Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M12 12c1-3.5-.5-6.5-3.5-7-1.2 2.8-.6 5.3 3.5 7Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M12 12c3.5 1 6.5-.5 7-3.5-2.8-1.2-5.3-.6-7 3.5Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                }
+                @if (d.icon === 'thermo') {
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M14 14.76V5a2 2 0 1 0-4 0v9.76a4 4 0 1 0 4 0Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                }
+                @if (d.icon === 'flame') {
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 2s3 4 3 7a3 3 0 0 1-6 0c0-3 3-7 3-7Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M7 13a5 5 0 0 0 10 0c0-2.5-1.5-4.5-3-6"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                }
+              </div>
+
+              <button
+                class="dm__toggle"
+                type="button"
+                [class.dm__toggle--on]="d.on"
+                (click)="$event.stopPropagation(); toggleDevice(d.id)"
+                [attr.aria-pressed]="d.on"
+                aria-label="Toggle device"
+              >
+                <span class="dm__toggle-knob" aria-hidden="true"></span>
+              </button>
+            </div>
+
+            <div class="dm__card-title">{{ displayTitle(d) }}</div>
+            <div class="dm__card-room">{{ roomLabel(d.room) }}</div>
+
+            <div class="dm__card-bottom">
+              <div class="dm__card-metrics">
+                @if (sensorValueLines(d); as lines) {
+                  <div class="dm__card-value dm__card-value--split">
+                    <span class="dm__card-value-line">{{ lines.temp }}</span>
+                    <span class="dm__card-value-line">{{ lines.hum }}</span>
+                  </div>
+                } @else if (d.value) {
+                  <div class="dm__card-value">{{ d.value }}</div>
+                }
+                <div class="dm__card-cons">{{ d.consumptionKwh }} kWh</div>
+              </div>
+
+              <div class="dm__card-actions" aria-label="Device actions">
+                <button
+                  class="dm__delete"
+                  type="button"
+                  (click)="$event.stopPropagation(); deleteDevice(d.id)"
+                  aria-label="Delete device"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 7h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M10 11v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M14 11v6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M6 7l1 14h10l1-14" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                    <path d="M9 7V4h6v3" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                  </svg>
+                </button>
+
+                <button
+                  class="dm__settings"
+                  type="button"
+                  (click)="$event.stopPropagation(); openDevice(d.id)"
+                  aria-label="Open controls"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    />
+                    <path
+                      d="M19.4 15a7.9 7.9 0 0 0 .1-1 7.9 7.9 0 0 0-.1-1l2-1.6-2-3.4-2.4 1a8.2 8.2 0 0 0-1.7-1l-.4-2.6H10l-.4 2.6a8.2 8.2 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.9 7.9 0 0 0-.1 1c0 .3 0 .7.1 1l-2 1.6 2 3.4 2.4-1a8.2 8.2 0 0 0 1.7 1l.4 2.6h4.2l.4-2.6a8.2 8.2 0 0 0 1.7-1l2.4 1 2-3.4-2-1.6Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            </article>
+          }
+        </section>
+      </section>
+    </section>
+  </main>
+</div>

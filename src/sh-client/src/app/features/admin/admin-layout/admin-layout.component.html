@@ -1,0 +1,53 @@
+<div class="dash">
+  <aside class="dash__sidebar" [class.dash__sidebar--light]="!isDarkSidebar()">
+    <div class="dash__sidebar-inner">
+      <a class="dash__nav-item" routerLink="/admin/users" routerLinkActive="dash__nav-item--active" aria-label="Manage users">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M16 11a3 3 0 1 0-3-3 3 3 0 0 0 3 3Z" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M6.5 11.5a2.5 2.5 0 1 0-2.5-2.5 2.5 2.5 0 0 0 2.5 2.5Z" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M20 20c-.6-2.8-3.2-4.8-6-4.8S8.6 17.2 8 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M10 20c-.4-2-2.2-3.5-4.4-3.5S1.6 18 1.2 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/admin/complaints" routerLinkActive="dash__nav-item--active" aria-label="Manage complaints">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M7 4h10v14H7z" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M9 8h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M9 12h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/admin/readings" routerLinkActive="dash__nav-item--active" aria-label="View sensor readings">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 12a8 8 0 0 1 8-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M20 12a8 8 0 0 1-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M8 12h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/admin/subscriptions" routerLinkActive="dash__nav-item--active" aria-label="Manage subscriptions">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="4" y="6" width="16" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M4 10h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </a>
+
+      <div class="dash__sidebar-spacer"></div>
+
+      <button class="dash__nav-item dash__nav-item--logout" type="button" (click)="logout()" aria-label="Logout">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 17H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M19 12H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="dash__main">
+    <section class="dash__panel admin__panel">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+</div>

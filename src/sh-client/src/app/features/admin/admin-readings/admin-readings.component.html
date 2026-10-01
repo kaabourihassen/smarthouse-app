@@ -1,0 +1,102 @@
+<section class="admin__page" aria-label="View sensor readings by house">
+  <div class="admin__head">
+    <div>
+      <div class="admin__kicker">ADMIN</div>
+      <h1 class="admin__title">View sensor readings by house</h1>
+    </div>
+
+    <div class="admin__head-actions">
+      <button class="admin__btn" type="button" (click)="loadUsers()" [disabled]="isLoadingUsers()">Refresh</button>
+      <button class="admin__btn" type="button" (click)="exportPdf()" [disabled]="devices().length === 0">Export to PDF</button>
+    </div>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="admin__error">{{ errorMessage() }}</div>
+  }
+
+  @if (isLoadingUsers()) {
+    <div class="admin__card">Loading houses…</div>
+  }
+
+  @if (!isLoadingUsers()) {
+    <div class="admin__filters">
+    <label class="admin__label">
+      House (user)
+      <select class="admin__select" [value]="selectedUserId()" (change)="onSelectUser(($any($event.target).value))">
+        @for (u of users(); track u.id) {
+          <option [value]="u.id">{{ u.firstName }} {{ u.lastName }} — {{ u.email }}</option>
+        }
+      </select>
+    </label>
+    </div>
+  }
+
+  @if (isLoadingDevices()) {
+    <div class="admin__card">Loading readings…</div>
+  }
+
+  @if (!isLoadingDevices() && devices().length > 0) {
+    <div class="admin__table">
+    <div class="admin__table-head">
+      <div>Room</div>
+      <div>Device</div>
+      <div>Value</div>
+      <div>State</div>
+    </div>
+
+    @for (d of devices(); track d.id) {
+      <button
+        type="button"
+        class="admin__table-row admin__table-row-btn"
+        [class.admin__table-row--selected]="selectedDeviceId() === d.id"
+        (click)="selectDevice(d.id)"
+      >
+        <div>{{ d.room }}</div>
+        <div>{{ d.title }}</div>
+        <div>{{ d.value }}</div>
+        <div>{{ d.on ? 'On' : 'Off' }}</div>
+      </button>
+    }
+    </div>
+
+    @if (selectedDeviceId()) {
+      <div class="admin__card admin__timeline">
+        <div class="admin__timeline-head">
+          <div class="admin__timeline-title">Timeline</div>
+          <div class="admin__timeline-sub">Last updates for the selected sensor</div>
+        </div>
+
+        @if (isLoadingTimeline()) {
+          <div class="admin__card">Loading timeline…</div>
+        }
+
+        @if (!isLoadingTimeline() && timeline().length > 0) {
+          <div class="admin__table admin__table--compact">
+            <div class="admin__table-head">
+              <div>Time</div>
+              <div>Value</div>
+              <div>State</div>
+            </div>
+
+            @for (p of timeline(); track p.id) {
+              <div class="admin__table-row">
+                <div>{{ p.createdAt | date: 'short' }}</div>
+                <div>{{ p.value }}</div>
+                <div>{{ p.on ? 'On' : 'Off' }}</div>
+              </div>
+            }
+          </div>
+        }
+
+        @if (!isLoadingTimeline() && timeline().length === 0) {
+          <div class="admin__card">No timeline data yet for this sensor (it will appear after new updates).</div>
+        }
+      </div>
+    }
+  }
+
+  @if (!isLoadingDevices() && devices().length === 0 && selectedUserId()) {
+    <div class="admin__card">No readings found for this house.</div>
+  }
+</section>

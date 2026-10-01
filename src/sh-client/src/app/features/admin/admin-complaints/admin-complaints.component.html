@@ -1,0 +1,58 @@
+<section class="admin__page" aria-label="Manage complaints">
+  <div class="admin__head">
+    <div>
+      <div class="admin__kicker">ADMIN</div>
+      <h1 class="admin__title">Manage complaints</h1>
+    </div>
+
+    <button class="admin__btn" type="button" (click)="refresh()" [disabled]="isLoading()">Refresh</button>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="admin__error">{{ errorMessage() }}</div>
+  }
+
+  @if (isLoading()) {
+    <div class="admin__card">Loading…</div>
+  }
+
+  @if (!isLoading()) {
+    <div class="admin__table">
+      <div class="admin__table-head">
+        <div>User</div>
+        <div>Title</div>
+        <div>Message</div>
+        <div>Status</div>
+        <div class="admin__cell-right">Actions</div>
+      </div>
+
+      @for (c of complaints(); track c.id) {
+        <div class="admin__table-row">
+          <div>
+            <div class="admin__row-title">{{ c.userEmail || 'Unknown user' }}</div>
+            <div class="admin__row-sub">{{ c.createdAt | date: 'short' }}</div>
+          </div>
+
+          <div class="admin__row-title">{{ c.title }}</div>
+
+          <div class="admin__msg" [title]="c.message">{{ c.message }}</div>
+
+          <div>
+            <span class="admin__pill" [class.admin__pill--ok]="c.status === 'resolved'">{{ c.status }}</span>
+          </div>
+
+          <div class="admin__cell-right">
+            <button
+              class="admin__btn"
+              type="button"
+              (click)="resolve(c.id)"
+              [disabled]="c.status === 'resolved' || resolvingId() === c.id"
+            >
+              Resolve
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</section>

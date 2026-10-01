@@ -1,0 +1,130 @@
+<div class="signup-page">
+  <!-- Left: Form Panel -->
+  <div class="signup-page__form-panel">
+    <!-- Logo -->
+    <div class="signup-page__logo">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="40" height="40" rx="10" fill="#1c2b3a" />
+        <rect x="12" y="12" width="16" height="16" rx="3" fill="none" stroke="#ffffff" stroke-width="2.5" />
+      </svg>
+    </div>
+
+    <h1 class="signup-page__title">Create an account</h1>
+    <p class="signup-page__subtitle">Join our innovative platform</p>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onCreateAccount()" class="signup-page__form">
+      <div class="signup-page__row">
+        <sh-input
+          label="First Name"
+          type="text"
+          placeholder="John"
+          iconType="person"
+          formControlName="firstName"
+        ></sh-input>
+        <sh-input
+          label="Last Name"
+          type="text"
+          placeholder="Doe"
+          iconType="person"
+          formControlName="lastName"
+        ></sh-input>
+      </div>
+
+      <sh-input
+        label="Email address"
+        type="email"
+        placeholder="john.doe@example.com"
+        iconType="email"
+        formControlName="email"
+      ></sh-input>
+
+      <sh-input
+        label="Password"
+        type="password"
+        placeholder="Minimum 8 characters"
+        iconType="lock"
+        formControlName="password"
+      ></sh-input>
+
+      <sh-input
+        label="Confirm password"
+        type="password"
+        placeholder="Confirm your password"
+        iconType="lock"
+        formControlName="confirmPassword"
+      ></sh-input>
+
+      @if (errorMessage) {
+        <p class="signup-page__error">{{ errorMessage }}</p>
+      }
+
+      <sh-button
+        [label]="isLoading ? 'Creating account...' : 'Create Account'"
+        variant="primary"
+        type="submit"
+        [fullWidth]="true"
+      ></sh-button>
+    </form>
+
+    <p class="signup-page__login-link">
+      Already have an account?
+      <a (click)="navigateToLogin()">Sign in</a>
+    </p>
+  </div>
+
+  <!-- Right: Info Panel -->
+  <div class="signup-page__info-panel">
+    <img src="imgsignup.jpg" alt="" class="signup-page__info-bg" />
+    <div class="signup-page__info-overlay"></div>
+
+    <div class="signup-page__info-content">
+      <h2 class="signup-page__info-title">
+        Welcome to<br />
+        Smart House
+      </h2>
+      <p class="signup-page__info-description">
+        Join thousands of users who trust our innovative
+        technology to manage their smart home and
+        take their living experience to the next level.
+      </p>
+
+      <div class="signup-page__features">
+        <div class="signup-page__feature">
+          <div class="signup-page__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+          <div class="signup-page__feature-text">
+            <strong>Cutting-edge Technology</strong>
+            <span>Innovative solutions and optimal performance</span>
+          </div>
+        </div>
+
+        <div class="signup-page__feature">
+          <div class="signup-page__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+          <div class="signup-page__feature-text">
+            <strong>Maximum Security</strong>
+            <span>Protect your data with advanced encryption</span>
+          </div>
+        </div>
+
+        <div class="signup-page__feature">
+          <div class="signup-page__feature-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+          <div class="signup-page__feature-text">
+            <strong>24/7 Dedicated Support</strong>
+            <span>Professional assistance at any time</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

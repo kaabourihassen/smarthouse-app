@@ -1,0 +1,772 @@
+<div class="dash">
+  <!-- Sidebar -->
+  <aside class="dash__sidebar" [class.dash__sidebar--light]="!isDarkSidebar()">
+    <div class="dash__sidebar-inner">
+      <a class="dash__nav-item" routerLink="/dashboard" routerLinkActive="dash__nav-item--active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/history" routerLinkActive="dash__nav-item--active" aria-label="History">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 12a9 9 0 1 0 3-6.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M3 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/devices" routerLinkActive="dash__nav-item--active" aria-label="Devices">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="6" width="13" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M7 15v2h5v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M19.5 10.5l.7.4-.7 1.2-.8-.2a2.5 2.5 0 0 1-.5.3l-.1.8h-1.4l-.1-.8a2.5 2.5 0 0 1-.5-.3l-.8.2-.7-1.2.7-.4a2.4 2.4 0 0 1 0-.6l-.7-.4.7-1.2.8.2c.2-.1.3-.2.5-.3l.1-.8h1.4l.1.8c.2.1.3.2.5.3l.8-.2.7 1.2-.7.4c0 .2.1.4 0 .6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          <path d="M17.4 10a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z" fill="none" stroke="currentColor" stroke-width="1.6" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/energy" routerLinkActive="dash__nav-item--active" aria-label="Energy">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2 4.5 12.4c-.4.5 0 1.2.6 1.2H11L10 22l8.5-10.4c.4-.5 0-1.2-.6-1.2H13V2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/camera" routerLinkActive="dash__nav-item--active" aria-label="Camera">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h3l2-2h6l2 2h3v12H4V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          <path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </a>
+
+      <div class="dash__sidebar-spacer"></div>
+
+      <button class="dash__nav-item dash__nav-item--logout" type="button" (click)="logout()" aria-label="Logout">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 17H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M19 12H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main panel -->
+  <main class="dash__main">
+    <section class="dash__panel pm__panel">
+      <header class="pm__hero">
+        <a class="pm__back" routerLink="/dashboard" aria-label="Back to dashboard">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M15 18l-6-6 6-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span>Back to dashboard</span>
+        </a>
+
+        <div class="pm__hero-body">
+          <div class="pm__avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 12.2a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-4 0-7.5 2-7.5 4.4V20h15v-1.4c0-2.4-3.5-4.4-7.5-4.4Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+
+          <div class="pm__identity">
+            @if (currentUser$ | async; as user) {
+              <h1 class="pm__name">{{ user.firstName }} {{ user.lastName }}</h1>
+              <div class="pm__role">{{ roleLabel(user.role) }}</div>
+              <div class="pm__meta">
+                <div class="pm__meta-item">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M4 6.5 12 12l8-5.5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M4 6h16v12H4z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>{{ user.email }}</span>
+                </div>
+              </div>
+            } @else {
+              <h1 class="pm__name">{{ userFallback.firstName }} {{ userFallback.lastName }}</h1>
+              <div class="pm__role">Primary administrator</div>
+              <div class="pm__meta">
+                <div class="pm__meta-item">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M4 6.5 12 12l8-5.5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M4 6h16v12H4z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>{{ userFallback.email }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </header>
+
+      <section class="pm__content">
+        <div class="pm__grid" aria-label="Profile and subscription management">
+          <div class="pm__col">
+            <article class="pm__card pm__card--form" aria-label="Edit profile">
+              <div class="pm__card-head">
+                <div class="pm__card-head-left">
+                  <div class="pm__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M4 20h4l11-11-4-4L4 16v4Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M13 6l4 4"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <h2 class="pm__section-title">Edit profile</h2>
+                </div>
+
+                <button class="pm__link" type="button" (click)="isEditProfileOpen.set(!isEditProfileOpen())">
+                  {{ isEditProfileOpen() ? 'Close' : 'Open' }}
+                </button>
+              </div>
+
+              @if (isEditProfileOpen()) {
+                <div class="pm__form" [formGroup]="profileForm">
+                  <div class="pm__form-row pm__form-row--2">
+                    <div class="pm__field">
+                      <div class="pm__label">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path
+                            d="M12 12.2a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          />
+                          <path
+                            d="M4.5 20c.8-3.2 3.9-5.5 7.5-5.5S18.7 16.8 19.5 20"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                          />
+                        </svg>
+                        <span>Full name</span>
+                      </div>
+                      <input class="pm__input" type="text" formControlName="fullName" />
+                    </div>
+
+                    <div class="pm__field">
+                      <div class="pm__label">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path
+                            d="M4 6.5 12 12l8-5.5"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M4 6h16v12H4z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        <span>Email address</span>
+                      </div>
+                      <input class="pm__input" type="email" formControlName="email" />
+                    </div>
+                  </div>
+                </div>
+
+                @if (profileErrorMessage()) {
+                  <p class="pm__error" role="alert">{{ profileErrorMessage() }}</p>
+                }
+
+                <div class="pm__actions" aria-label="Edit profile actions">
+                  <button class="pm__save" type="button" (click)="saveProfile()">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M4 4h14l2 2v14H4V4Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M7 4v6h10V4"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    Save changes
+                  </button>
+                  <button class="pm__cancel" type="button" (click)="resetProfileForm()">Cancel</button>
+                </div>
+              }
+            </article>
+
+            <article class="pm__card" aria-label="Change password">
+              <div class="pm__card-head">
+                <div class="pm__card-head-left">
+                  <div class="pm__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M7 11V8a5 5 0 0 1 10 0v3"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <rect
+                        x="6"
+                        y="11"
+                        width="12"
+                        height="10"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      />
+                    </svg>
+                  </div>
+                  <h2 class="pm__section-title">Change password</h2>
+                </div>
+
+                <button
+                  class="pm__link"
+                  type="button"
+                  (click)="isChangePasswordOpen.set(!isChangePasswordOpen())"
+                >
+                  {{ isChangePasswordOpen() ? 'Hide' : 'Show' }}
+                </button>
+              </div>
+
+              @if (isChangePasswordOpen()) {
+                <div class="pm__hint">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M12 2 4 5v6c0 6 4 10 8 11 4-1 8-5 8-11V5l-8-3Z"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M9 12l2 2 4-5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <p>Password must be at least 8 characters and include uppercase, lowercase, numbers, and special characters.</p>
+                </div>
+                <div class="pm__form" [formGroup]="passwordForm">
+                  <div class="pm__field">
+                    <div class="pm__label">Current password</div>
+                    <div class="pm__input-wrap">
+                      <input
+                        class="pm__input"
+                        [type]="showOldPassword() ? 'text' : 'password'"
+                        placeholder="Enter your current password"
+                        formControlName="currentPassword"
+                      />
+                      <button
+                        class="pm__eye"
+                        type="button"
+                        (click)="showOldPassword.set(!showOldPassword())"
+                        aria-label="Toggle password visibility"
+                      >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path
+                            d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="pm__field">
+                    <div class="pm__label">New password</div>
+                    <div class="pm__input-wrap">
+                      <input
+                        class="pm__input"
+                        [type]="showNewPassword() ? 'text' : 'password'"
+                        placeholder="Enter your new password"
+                        formControlName="newPassword"
+                      />
+                      <button
+                        class="pm__eye"
+                        type="button"
+                        (click)="showNewPassword.set(!showNewPassword())"
+                        aria-label="Toggle password visibility"
+                      >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path
+                            d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="pm__field">
+                    <div class="pm__label">Confirm password</div>
+                    <div class="pm__input-wrap">
+                      <input
+                        class="pm__input"
+                        [type]="showConfirmPassword() ? 'text' : 'password'"
+                        placeholder="Confirm your new password"
+                        formControlName="confirmPassword"
+                      />
+                      <button
+                        class="pm__eye"
+                        type="button"
+                        (click)="showConfirmPassword.set(!showConfirmPassword())"
+                        aria-label="Toggle password visibility"
+                      >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path
+                            d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <button class="pm__pw-cta" type="button" (click)="submitPasswordChange()">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M7 11V8a5 5 0 0 1 10 0v3"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <rect
+                        x="6"
+                        y="11"
+                        width="12"
+                        height="10"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      />
+                    </svg>
+                    Save changes
+                  </button>
+                </div>
+              }
+            </article>
+
+            <article class="pm__card pm__family" aria-label="Family members">
+              <div class="pm__card-head">
+                <div class="pm__card-head-left">
+                  <div class="pm__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M16 11a3 3 0 1 0-3-3 3 3 0 0 0 3 3Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      />
+                      <path
+                        d="M6.5 11.5a2.5 2.5 0 1 0-2.5-2.5 2.5 2.5 0 0 0 2.5 2.5Z"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      />
+                      <path
+                        d="M20 20c-.6-2.8-3.2-4.8-6-4.8S8.6 17.2 8 20"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M10 20c-.4-2-2.2-3.5-4.4-3.5S1.6 18 1.2 20"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <h2 class="pm__section-title">Family members</h2>
+                </div>
+
+                <button
+                  class="pm__add"
+                  type="button"
+                  (click)="toggleAddMember()"
+                  [attr.aria-expanded]="isAddMemberOpen()"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path
+                      d="M12 5v14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      d="M5 12h14"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                  Add
+                </button>
+              </div>
+
+              <ng-container *ngIf="isAddMemberOpen()">
+                <form class="pm__family-form" [formGroup]="addMemberForm" (ngSubmit)="submitAddMember()">
+                  <div class="pm__family-form-title">Add a new member</div>
+
+                  <input
+                    class="pm__input"
+                    type="email"
+                    formControlName="email"
+                    placeholder="Email"
+                    autocomplete="email"
+                  />
+
+                  @if (addMemberMessage()) {
+                    <p
+                      class="pm__family-message"
+                      [class.pm__family-message--error]="addMemberMessageTone() === 'error'"
+                      [class.pm__family-message--success]="addMemberMessageTone() === 'success'"
+                      role="status"
+                      aria-live="polite"
+                    >
+                      {{ addMemberMessage() }}
+                    </p>
+                  }
+
+                  <div class="pm__family-actions">
+                    <button class="pm__family-submit" type="submit">Add</button>
+                    <button class="pm__family-cancel" type="button" (click)="cancelAddMember()">Cancel</button>
+                  </div>
+                </form>
+              </ng-container>
+
+              <div class="pm__family-list">
+                @for (m of familyMembers(); track m.email) {
+                  <div class="pm__member" [class.pm__member--active]="m.isActive">
+                    <div class="pm__member-left">
+                      <div class="pm__member-avatar" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path
+                            d="M12 12.2a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                          />
+                          <path
+                            d="M4.5 20c.8-3.2 3.9-5.5 7.5-5.5S18.7 16.8 19.5 20"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                          />
+                        </svg>
+                      </div>
+                      <div class="pm__member-text">
+                        <div class="pm__member-name">{{ m.fullName }}</div>
+                        <div class="pm__member-relation">{{ m.relationLabel }}</div>
+                      </div>
+                    </div>
+
+                    <div class="pm__member-right">
+                      <div class="pm__member-status" [class.pm__member-status--inactive]="!m.isActive">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path
+                            d="M20 6 9 17l-5-5"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        {{ m.isActive ? 'Active' : 'Inactive' }}
+                      </div>
+
+                      <button
+                        class="pm__member-delete"
+                        type="button"
+                        [disabled]="removingMemberEmail() === m.email"
+                        (click)="deleteMember(m.email)"
+                        [attr.aria-label]="'Delete ' + m.fullName"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <div class="pm__family-footer">Total: {{ activeFamilyMembersCount() }} active members</div>
+            </article>
+          </div>
+
+          <aside class="pm__col pm__col--right">
+            <article class="pm__card" aria-label="Sensors">
+              <div class="pm__card-head">
+                <div class="pm__card-head-left">
+                  <div class="pm__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path
+                        d="M12 4a8 8 0 0 1 8 8"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M12 8a4 4 0 0 1 4 4"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M12 12h.01"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="4"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <h2 class="pm__section-title">Sensors</h2>
+                </div>
+              </div>
+
+              <div class="pm__big">
+                <div class="pm__big-number">{{ sensorsTotal() }}</div>
+                <div class="pm__big-label">Connected sensors</div>
+              </div>
+
+              <div class="pm__rows">
+                @for (s of sensorsByRoom(); track s.label) {
+                  <div class="pm__row">
+                    <span class="pm__row-label">{{ s.label }}</span>
+                    <span class="pm__row-value">{{ s.value }} sensors</span>
+                  </div>
+                }
+              </div>
+            </article>
+
+            <article class="pm__card" aria-label="Subscription">
+              <div class="pm__card-head">
+                <div class="pm__card-head-left">
+                  <div class="pm__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <rect
+                        x="4"
+                        y="6"
+                        width="16"
+                        height="12"
+                        rx="2"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      />
+                      <path
+                        d="M4 10h16"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </div>
+                  <h2 class="pm__section-title">Subscription</h2>
+                </div>
+              </div>
+
+              <div class="pm__sub">
+                <div class="pm__sub-row">
+                  <div class="pm__sub-label">Plan</div>
+                  <div class="pm__sub-right">
+                    <div class="pm__sub-plan">{{ subscription.planName }}</div>
+                    <span class="pm__pill">{{ subscription.planTag }}</span>
+                  </div>
+                </div>
+
+                <div class="pm__divider"></div>
+
+                <div class="pm__sub-row">
+                  <div class="pm__sub-label">Status</div>
+                  <div class="pm__sub-right">
+                    <div class="pm__status">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M20 6 9 17l-5-5"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                      {{ subscription.statusLabel }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pm__divider"></div>
+
+                <div class="pm__sub-row">
+                  <div class="pm__sub-label">Billing</div>
+                  <div class="pm__sub-right">
+                    <div class="pm__sub-inline">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          d="M7 3v3"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                        <path
+                          d="M17 3v3"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                        <rect
+                          x="4"
+                          y="6"
+                          width="16"
+                          height="14"
+                          rx="2"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        />
+                        <path
+                          d="M4 10h16"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                      <div>
+                        <div class="pm__sub-plan">{{ subscription.durationLabel }}</div>
+                        <div class="pm__sub-note">{{ subscription.renewalLabel }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pm__divider"></div>
+
+                <div class="pm__sub-row">
+                  <div class="pm__sub-label">Price</div>
+                  <div class="pm__sub-right">
+                    <div class="pm__price">{{ subscription.priceLabel }}</div>
+                  </div>
+                </div>
+
+                <a class="pm__cta" routerLink="/dashboard/subscription">Manage subscription</a>
+              </div>
+            </article>
+
+            <article class="pm__card" aria-label="Account information">
+              <div class="pm__account-title">Account information</div>
+              <div class="pm__account-row">
+                <div class="pm__account-label">Member since</div>
+                <div class="pm__account-value">{{ accountInfo.memberSince }}</div>
+              </div>
+              <div class="pm__divider"></div>
+              <div class="pm__account-row">
+                <div class="pm__account-label">Last login</div>
+                <div class="pm__account-value">{{ accountInfo.lastLogin }}</div>
+              </div>
+            </article>
+          </aside>
+        </div>
+
+      </section>
+    </section>
+  </main>
+</div>

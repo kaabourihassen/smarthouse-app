@@ -1,0 +1,51 @@
+// Add this to the handleMessage method in mqtt-ingest.service.ts
+// Look for the section with "--- Alerts (generic) ---" and add this AFTER it:
+
+// --- Human Detection ---
+if (String(topic ?? '').trim().endsWith('/human_detection')) {
+  const { userId, room } = this.resolveIngestTarget({ defaultUserId, topic, payload });
+  if (!userId || !room) return;
+
+  if (!payload || typeof payload !== 'object') return;
+
+  const confidence = Number((payload as any).confidence ?? 0);
+  const durationSec = Number((payload as any).duration ?? 120); // Default 2 minutes
+
+  // Only process if confidence is above threshold
+  if (confidence < 0.5) return;
+
+  try {
+    // Find the camera for this user/room
+    const camera = await this.camerasService.findByUserAndRoom(userId, room);
+    if (!camera) {
+      this.logger.warn(`No camera found for user ${userId} in room ${room}`);
+      return;
+    }
+
+    // Trigger recording using existing service
+    const recordingResult = await this.recordingJobsService.start(userId, {
+      cameraId: String(camera.id),
+      mode: 'detection',
+      title: `Human detected in ${room} (confidence: ${(confidence * 100).toFixed(1)}%)`,
+      roomLabel: room,
+      durationSeconds: durationSec
+    });
+
+    this.logger.log(`Started detection recording for user ${userId} in ${room}`);
+
+    // Send notification
+    await this.notificationsService.createForUser(userId, {
+      type: 'security',
+      tone: 'danger',
+      icon: 'alert',
+      title: 'Human Detected!',
+      message: `Person detected in ${room} (confidence: ${Math.round(confidence * 100)}%)`,
+      urgent: true
+    });
+
+  } catch (error) {
+    this.logger.error(`Failed to handle human detection: ${error.message}`);
+  }
+
+  return; // Important: return to prevent double processing
+}

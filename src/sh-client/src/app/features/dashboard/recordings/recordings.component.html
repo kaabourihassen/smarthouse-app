@@ -1,0 +1,235 @@
+<div class="dash">
+  <aside class="dash__sidebar" [class.dash__sidebar--light]="!isDarkSidebar()">
+    <div class="dash__sidebar-inner">
+      <a class="dash__nav-item" routerLink="/dashboard" routerLinkActive="dash__nav-item--active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Accueil">
+        <svg class="dash__nav-ic" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/history" routerLinkActive="dash__nav-item--active" aria-label="Historique">
+        <svg class="dash__nav-ic" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 12a9 9 0 1 0 3-6.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M3 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/devices" routerLinkActive="dash__nav-item--active" aria-label="Appareils">
+        <svg class="dash__nav-ic" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="6" width="13" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M7 15v2h5v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M19.5 10.5l.7.4-.7 1.2-.8-.2a2.5 2.5 0 0 1-.5.3l-.1.8h-1.4l-.1-.8a2.5 2.5 0 0 1-.5-.3l-.8.2-.7-1.2.7-.4a2.4 2.4 0 0 1 0-.6l-.7-.4.7-1.2.8.2c.2-.1.3-.2.5-.3l.1-.8h1.4l.1.8c.2.1.3.2.5.3l.8-.2.7 1.2-.7.4c0 .2.1.4 0 .6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/energy" routerLinkActive="dash__nav-item--active" aria-label="Énergie">
+        <svg class="dash__nav-ic" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2 4.5 12.4c-.4.5 0 1.2.6 1.2H11L10 22l8.5-10.4c.4-.5 0-1.2-.6-1.2H13V2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/camera" routerLinkActive="dash__nav-item--active" aria-label="Caméra">
+        <svg class="dash__nav-ic" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h3l2-2h6l2 2h3v12H4V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          <path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </a>
+
+      <div class="dash__sidebar-spacer"></div>
+
+      <button class="dash__nav-item dash__nav-item--logout" type="button" (click)="logout()" aria-label="Déconnexion">
+        <svg class="dash__nav-ic" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 17H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M19 12H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="dash__main">
+    <section class="dash__panel">
+      <header class="rec__header">
+        <div>
+          <h1 class="rec__title">Enregistrements vidéo</h1>
+          <p class="rec__subtitle">Visionnez et gérez vos enregistrements de sécurité et détections de mouvement</p>
+        </div>
+
+        <div class="rec__header-right">
+          <div class="rec__search">
+            <svg class="rec__search-ic" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M16.5 16.5 21 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <input class="rec__search-in" type="text" placeholder="Rechercher une vidéo..." [value]="query()" (input)="query.set(($any($event.target).value) ?? '')" />
+          </div>
+
+          <div class="rec__view" role="group" aria-label="Mode d'affichage">
+            <button class="rec__view-btn" type="button" [class.rec__view-btn--on]="viewMode() === 'grid'" (click)="viewMode.set('grid')" aria-label="Vue Grille">
+              <svg class="rec__v-ic" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 4h7v7H4V4Zm9 0h7v7h-7V4ZM4 13h7v7H4v-7Zm9 0h7v7h-7v-7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <button class="rec__view-btn" type="button" [class.rec__view-btn--on]="viewMode() === 'list'" (click)="viewMode.set('list')" aria-label="Vue Liste">
+              <svg class="rec__v-ic" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M8 6h13M8 12h13M8 18h13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                <path d="M4 6h.01M4 12h.01M4 18h.01" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <section class="rec__tabs" aria-label="Filtres par type">
+        <div class="rec__chips" role="tablist" aria-label="Filtres de vidéo">
+          <button class="rec__chip" type="button" [class.rec__chip--on]="selected() === 'all'" (click)="setFilter('all')">Tous ({{ counts().all }})</button>
+          <button class="rec__chip" type="button" [class.rec__chip--on]="selected() === 'detection'" (click)="setFilter('detection')">Détections ({{ counts().detection }})</button>
+          <button class="rec__chip" type="button" [class.rec__chip--on]="selected() === 'manual'" (click)="setFilter('manual')">Manuels ({{ counts().manual }})</button>
+          <button class="rec__chip" type="button" [class.rec__chip--on]="selected() === 'scheduled'" (click)="setFilter('scheduled')">Programmés ({{ counts().scheduled }})</button>
+        </div>
+      </section>
+
+      <section class="rec__grid" [class.rec__grid--list]="viewMode() === 'list'" aria-label="Galerie des enregistrements">
+        @for (r of filtered(); track r.id) {
+          <article class="rec__card" (click)="playRecording(r)">
+            <div class="rec__thumb" [style.background-image]="thumbBg(r)">
+              <span class="rec__badge" [attr.data-mode]="r.mode">
+                @if (r.mode === 'detection') { <span class="rec__badge-dot"></span> }
+                {{ r.modeLabel }}
+              </span>
+              <button class="rec__play-overlay" type="button" aria-label="Lire la vidéo">
+                <svg class="rec__play-ic" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 5v14l11-7z" fill="currentColor" />
+                </svg>
+              </button>
+              <span class="rec__dur">{{ r.durationLabel }}</span>
+            </div>
+
+            <div class="rec__body">
+              <h3 class="rec__name">{{ r.title }}</h3>
+              <div class="rec__meta">
+                <span class="rec__m">
+                  <svg class="rec__m-ic" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M7 3v4M17 3v4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M4 8h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    <path d="M6 6h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                  </svg>
+                  <span>{{ r.dateLabel }}</span>
+                </span>
+                <span class="rec__m">
+                  <svg class="rec__m-ic" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0Z" fill="none" stroke="currentColor" stroke-width="2" />
+                  </svg>
+                  <span>{{ r.timeLabel }}</span>
+                </span>
+                <span class="rec__m">
+                  <svg class="rec__m-ic" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 21s7-4.5 7-11a7 7 0 0 0-14 0c0 6.5 7 11 7 11Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                  </svg>
+                  <span>{{ r.roomLabel || 'Living Room' }}</span>
+                </span>
+                <span class="rec__size">{{ r.sizeLabel }}</span>
+              </div>
+
+              <div class="rec__card-actions">
+                <button class="rec__card-btn rec__card-btn--play" type="button">
+                  <svg class="rec__cbtn-ic" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8 5v14l11-7z" fill="currentColor" />
+                  </svg>
+                  <span>Visionner</span>
+                </button>
+                @if (r.fileUrl) {
+                  <a class="rec__card-btn rec__card-btn--dl" [href]="r.fileUrl" download (click)="$event.stopPropagation()" aria-label="Télécharger la vidéo">
+                    <svg class="rec__cbtn-ic" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 3v10M8 11l4 4 4-4M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                    <span>Télécharger</span>
+                  </a>
+                }
+              </div>
+            </div>
+          </article>
+        }
+
+        @if (filtered().length === 0) {
+          <div class="rec__empty">
+            <svg class="rec__empty-ic" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M16 10l4-2v8l-4-2v-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+            </svg>
+            <span>Aucun enregistrement vidéo disponible.</span>
+          </div>
+        }
+      </section>
+
+      <div class="rec__open">
+        <a class="rec__open-link" routerLink="/dashboard/camera">
+          <svg class="rec__open-ic" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h3l2-2h6l2 2h3v12H4V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+            <path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="2" />
+          </svg>
+          <span>Accéder au flux en direct</span>
+        </a>
+      </div>
+    </section>
+  </main>
+</div>
+
+@if (activeRecording(); as rec) {
+  <div class="rec__modal-backdrop" (click)="closePlayer()">
+    <div class="rec__modal-dialog" (click)="$event.stopPropagation()">
+      <header class="rec__modal-header">
+        <div>
+          <h3 class="rec__modal-title">{{ rec.title }}</h3>
+          <p class="rec__modal-sub">{{ rec.roomLabel || 'Living Room' }} · {{ rec.dateLabel }} {{ rec.timeLabel }} · Durée: {{ rec.durationLabel }} ({{ rec.sizeLabel }})</p>
+        </div>
+        <button class="rec__modal-close" type="button" (click)="closePlayer()" aria-label="Fermer la vidéo">
+          <svg class="rec__close-ic" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </button>
+      </header>
+
+      <div class="rec__modal-video">
+        @if (isLoadingVideo()) {
+          <div class="rec__modal-loading">
+            <div class="rec__spinner"></div>
+            <span>Chargement de la vidéo en cours...</span>
+          </div>
+        } @else if (videoBlobUrl()) {
+          <video [src]="videoBlobUrl()" controls autoplay loop class="rec__video-el"></video>
+        } @else if (videoError()) {
+          <div class="rec__modal-error">
+            <svg class="rec__err-ic" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span>{{ videoError() }}</span>
+          </div>
+        } @else {
+          <div class="rec__modal-no-video">
+            <svg class="rec__err-ic" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8Z" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M16 10l4-2v8l-4-2v-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+            </svg>
+            <span>Aperçu de la vidéo de détection ({{ rec.durationLabel }})</span>
+          </div>
+        }
+      </div>
+
+      <footer class="rec__modal-footer">
+        @if (videoBlobUrl(); as blobUrl) {
+          <a [href]="blobUrl" [download]="rec.title + '.mp4'" class="rec__btn rec__btn--primary">
+            <svg class="rec__btn-ic" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3v10M8 11l4 4 4-4M4 19h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <span>Télécharger la vidéo MP4</span>
+          </a>
+        }
+        <button class="rec__btn rec__btn--ghost" type="button" (click)="closePlayer()">Fermer</button>
+      </footer>
+    </div>
+  </div>
+}

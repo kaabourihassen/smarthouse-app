@@ -1,0 +1,34 @@
+// Add this method to the CamerasService class in cameras.service.ts
+// Place it after the getForUser method:
+
+async findByUserAndRoom(userId: string, room: string): Promise<Camera | null> {
+  // Try to find by roomLabel first, then roomKey
+  const camera = await this.cameraModel.findOne({
+    userId,
+    $or: [
+      { roomLabel: room },
+      { roomKey: room }
+    ]
+  }).lean().exec();
+
+  return camera ? this.toCamera(camera) : null;
+}
+
+// Also need to add a toCamera method if it doesn't exist (similar to toRecord but returns Camera entity)
+private toCamera(raw: any): Camera {
+  if (!raw) return null;
+
+  const camera = new this.cameraModel();
+  camera._id = raw._id;
+  camera.userId = raw.userId;
+  camera.name = raw.name;
+  camera.roomKey = raw.roomKey;
+  camera.roomLabel = raw.roomLabel;
+  camera.status = raw.status;
+  camera.detectionEnabled = !!raw.detectionEnabled;
+  camera.streamUrl = raw.streamUrl;
+  camera.qualityLabel = raw.qualityLabel;
+  camera.storageTotalGb = parseInt(raw.storageTotalGb, 10) || 50;
+
+  return camera;
+}

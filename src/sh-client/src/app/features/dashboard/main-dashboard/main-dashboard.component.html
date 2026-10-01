@@ -1,0 +1,330 @@
+<div class="dash">
+  <aside class="dash__sidebar" [class.dash__sidebar--light]="!isDarkSidebar()">
+    <div class="dash__sidebar-inner">
+      <a class="dash__nav-item" routerLink="/dashboard" routerLinkActive="dash__nav-item--active" [routerLinkActiveOptions]="{ exact: true }" aria-label="Home">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/history" routerLinkActive="dash__nav-item--active" aria-label="History">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 8v4l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 12a9 9 0 1 0 3-6.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M3 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/devices" routerLinkActive="dash__nav-item--active" aria-label="Devices">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="6" width="13" height="9" rx="2" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M7 15v2h5v-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M19.5 10.5l.7.4-.7 1.2-.8-.2a2.5 2.5 0 0 1-.5.3l-.1.8h-1.4l-.1-.8a2.5 2.5 0 0 1-.5-.3l-.8.2-.7-1.2.7-.4a2.4 2.4 0 0 1 0-.6l-.7-.4.7-1.2.8.2c.2-.1.3-.2.5-.3l.1-.8h1.4l.1.8c.2.1.3.2.5.3l.8-.2.7 1.2-.7.4c0 .2.1.4 0 .6Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+          <path d="M17.4 10a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z" fill="none" stroke="currentColor" stroke-width="1.6" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/energy" routerLinkActive="dash__nav-item--active" aria-label="Energy">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M13 2 4.5 12.4c-.4.5 0 1.2.6 1.2H11L10 22l8.5-10.4c.4-.5 0-1.2-.6-1.2H13V2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+        </svg>
+      </a>
+
+      <a class="dash__nav-item" routerLink="/dashboard/camera" routerLinkActive="dash__nav-item--active" aria-label="Camera">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h3l2-2h6l2 2h3v12H4V7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          <path d="M12 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" fill="none" stroke="currentColor" stroke-width="2" />
+        </svg>
+      </a>
+
+      <div class="dash__sidebar-spacer"></div>
+
+      <button class="dash__nav-item dash__nav-item--logout" type="button" (click)="logout()" aria-label="Logout">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M10 17H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          <path d="M14 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M19 12H10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="dash__main">
+    <section class="dash__panel">
+      <header class="dash__header">
+        <div class="dash__header-left">
+          <h1 class="dash__headline">Welcome home!</h1>
+          <p class="dash__date">{{ todayLabel }}</p>
+        </div>
+
+        <div class="dash__header-right">
+          <a class="dash__notif" routerLink="/dashboard/notifications" aria-label="Notifications">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 7h18s-3 0-3-7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+              <path d="M9 19a3 3 0 0 0 6 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            @if (unreadNotificationsCount() > 0) {
+              <span class="dash__notif-badge">{{ unreadNotificationsCount() }}</span>
+            }
+          </a>
+
+          <button class="dash__toggle" type="button" [class.dash__toggle--on]="isDarkSidebar()" (click)="isDarkSidebar.set(!isDarkSidebar())" aria-label="Toggle sidebar theme">
+            <span class="dash__toggle-knob"></span>
+          </button>
+
+          <a class="dash__profile" routerLink="/dashboard/profile" aria-label="Profile">
+            <span class="dash__profile-bubbles" aria-hidden="true"><span></span><span></span></span>
+            <span class="dash__profile-name">
+              @if (currentUser$ | async; as user) {
+                {{ user.firstName }} {{ user.lastName }}
+              } @else {
+                {{ userFallback.firstName }} {{ userFallback.lastName }}
+              }
+            </span>
+          </a>
+        </div>
+      </header>
+
+      <section class="dash__kpis" aria-label="KPIs">
+        @for (k of kpis; track k.label) {
+          <article class="dash__kpi">
+            <div class="dash__kpi-top">
+              <div class="dash__kpi-icon" aria-hidden="true">
+                @if (k.icon === 'thermo') {
+                  <svg viewBox="0 0 24 24">
+                    <path d="M14 14.76V5a2 2 0 1 0-4 0v9.76a4 4 0 1 0 4 0Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                  </svg>
+                }
+                @if (k.icon === 'thermo-snow') {
+                  <svg viewBox="0 0 24 24">
+                    <path d="M14 14.76V5a2 2 0 1 0-4 0v9.76a4 4 0 1 0 4 0Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                    <path d="M7 19l-2 2m0-2 2 2m10-2-2 2m0-2 2 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                }
+                @if (k.icon === 'bolt') {
+                  <svg viewBox="0 0 24 24">
+                    <path d="M13 2 4.5 12.4c-.4.5 0 1.2.6 1.2H11L10 22l8.5-10.4c.4-.5 0-1.2-.6-1.2H13V2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                  </svg>
+                }
+                @if (k.icon === 'drop') {
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 2s7 7.4 7 13a7 7 0 0 1-14 0C5 9.4 12 2 12 2Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                  </svg>
+                }
+                @if (k.icon === 'sun') {
+                  <svg viewBox="0 0 24 24">
+                    <path d="M12 18a6 6 0 1 0 0-12 6 6 0 0 0 0 12Z" fill="none" stroke="currentColor" stroke-width="2" />
+                    <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                }
+              </div>
+              <div class="dash__kpi-label">{{ k.label }}</div>
+            </div>
+
+            <div class="dash__kpi-value">
+              <div class="dash__kpi-number">{{ k.value }}</div>
+              <div class="dash__kpi-unit">{{ k.unit }}</div>
+            </div>
+
+            <div class="dash__kpi-hint">{{ k.hint }}</div>
+          </article>
+        }
+      </section>
+
+      <div class="dash__content">
+        <div class="dash__content-left">
+          <article class="dash__live" aria-label="Live">
+            <div class="dash__live-badge"><span class="dash__live-dot"></span> Live</div>
+            <img class="dash__live-image" src="/HouseImage.jpg" alt="Live camera" loading="lazy" decoding="async" />
+          </article>
+
+          <article class="dash__energy" aria-label="Energy">
+            <div class="dash__energy-head">
+              <div>
+                <h2 class="dash__section-title">Energy consumption (kWh)</h2>
+                <p class="dash__section-subtitle">{{ selectedRoomLabel() }} · This week</p>
+              </div>
+              <div class="dash__tabs" role="tablist" aria-label="Period">
+                <button class="dash__tab dash__tab--active" type="button">Week</button>
+                <button class="dash__tab" type="button">Month</button>
+                <button class="dash__tab" type="button">Year</button>
+              </div>
+            </div>
+
+            <div class="dash__energy-chart">
+              <svg class="dash__energy-svg" viewBox="0 0 720 160" role="img" aria-label="Energy consumption chart">
+                <path d="M40 30H700M40 80H700M40 130H700" class="dash__energy-grid" />
+                <path class="dash__energy-line" [attr.d]="energyChart().path" />
+                <g class="dash__energy-pts">
+                  @for (p of energyChart().points; track p.x) {
+                    <circle [attr.cx]="p.x" [attr.cy]="p.y" r="4" />
+                  }
+                </g>
+                <g class="dash__energy-x">
+                  @for (l of energyChart().labels; track l.x) {
+                    <text [attr.x]="l.x" y="152">{{ l.label }}</text>
+                  }
+                </g>
+              </svg>
+            </div>
+          </article>
+
+          <section class="dash__lower" aria-label="Controls">
+            <div class="dash__quick" aria-label="Quick controls">
+              @for (c of quickControls(); track c.id) {
+                <article class="dash__qc" [class.dash__qc--selected]="deviceCard()?.id === c.id" (click)="selectDevice(c.id)">
+                  <div class="dash__qc-top">
+                    <div class="dash__qc-icon" aria-hidden="true">
+                      @if (c.icon === 'wind') {
+                        <svg viewBox="0 0 24 24">
+                          <path d="M3 8h10a3 3 0 1 0-3-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                          <path d="M3 12h14a3 3 0 1 1-3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                          <path d="M3 16h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                      }
+                      @if (c.icon === 'bulb') {
+                        <svg viewBox="0 0 24 24">
+                          <path d="M9 18h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                          <path d="M10 22h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                          <path d="M8 10a4 4 0 1 1 8 0c0 2-1.2 2.9-2 4-.4.6-.6 1.1-.7 2H10.7c-.1-.9-.3-1.4-.7-2-.8-1.1-2-2-2-4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                        </svg>
+                      }
+                      @if (c.icon === 'fan') {
+                        <svg viewBox="0 0 24 24">
+                          <path d="M12 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="none" stroke="currentColor" stroke-width="2" />
+                          <path d="M12 12c-3.5-1-6.5.5-7 3.5 2.8 1.2 5.3.6 7-3.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                          <path d="M12 12c1-3.5-.5-6.5-3.5-7-1.2 2.8-.6 5.3 3.5 7Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                          <path d="M12 12c3.5 1 6.5-.5 7-3.5-2.8-1.2-5.3-.6-7 3.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                        </svg>
+                      }
+                      @if (c.icon === 'thermo') {
+                        <svg viewBox="0 0 24 24">
+                          <path d="M14 14.76V5a2 2 0 1 0-4 0v9.76a4 4 0 1 0 4 0Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                        </svg>
+                      }
+                    </div>
+                    <button class="dash__switch" type="button" [class.dash__switch--on]="c.on" (click)="$event.stopPropagation(); toggleQuickDevice(c.id)" aria-label="Toggle">
+                      <span class="dash__switch-knob"></span>
+                    </button>
+                  </div>
+                  <div class="dash__qc-title">{{ c.title }}</div>
+                  <div class="dash__qc-sub">{{ c.subtitle }}</div>
+                  @if (c.value) {
+                    <div class="dash__qc-value">{{ c.value }}</div>
+                  }
+                </article>
+              }
+            </div>
+          </section>
+        </div>
+
+        <aside class="dash__content-right" aria-label="Rooms">
+          <article class="dash__highlight" aria-label="Room highlight">
+            <div class="dash__highlight-head">
+              <div>
+                <div class="dash__highlight-title">{{ selectedRoomLabel() }}</div>
+                <div class="dash__highlight-meta">{{ roomDeviceCount() }} devices</div>
+              </div>
+            </div>
+            <img class="dash__highlight-image" src="/HouseImage.jpg" alt="Living room" loading="lazy" decoding="async" />
+          </article>
+
+          <article class="dash__rooms">
+            <div class="dash__rooms-head">
+              <h2 class="dash__rooms-title">Rooms</h2>
+              <button class="dash__rooms-next" type="button" aria-label="Next">›</button>
+            </div>
+
+            @if (isAddRoomOpen()) {
+              <div class="dash__add-form">
+                <div class="dash__add-form-title">Add a room</div>
+                <form class="dash__add-form-grid" [formGroup]="addRoomForm" (ngSubmit)="submitAddRoom()">
+                  <input class="dash__add-input" type="text" formControlName="name" placeholder="e.g. Office" />
+                  <div class="dash__add-actions">
+                    <button class="dash__add-cancel" type="button" (click)="cancelAddRoom()">Cancel</button>
+                    <button class="dash__add-submit" type="submit">Add</button>
+                  </div>
+                </form>
+              </div>
+            } @else {
+              <button class="dash__add" type="button" (click)="openAddRoom()">
+                <span class="dash__add-plus">+</span>
+                Add a room
+              </button>
+            }
+
+            <div class="dash__rooms-list">
+              @for (r of rooms(); track r.key) {
+                <button class="dash__room" type="button" [class.dash__room--selected]="selectedRoomKey() === r.key" (click)="selectRoom(r.key)">
+                  <div class="dash__room-icon" aria-hidden="true">
+                    @if (r.icon === 'home') {
+                      <svg viewBox="0 0 24 24">
+                        <path d="M3 10.5L12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+                      </svg>
+                    }
+                    @if (r.icon === 'flame') {
+                      <svg viewBox="0 0 24 24">
+                        <path d="M12 2s3 4 3 7a3 3 0 0 1-6 0c0-3 3-7 3-7Z" fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M7 13a5 5 0 0 0 10 0c0-2.5-1.5-4.5-3-6"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                    }
+                    @if (r.icon === 'moon') {
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M21 14.5A8.5 8.5 0 0 1 9.5 3a7 7 0 1 0 11.5 11.5Z"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    }
+                    @if (r.icon === 'drop') {
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M12 2s7 7.2 7 13a7 7 0 1 1-14 0C5 9.2 12 2 12 2Z"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    }
+                    @if (r.icon === 'pulse') {
+                      <svg viewBox="0 0 24 24">
+                        <path
+                          d="M3 12h4l2-5 4 10 2-5h6"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    }
+                  </div>
+                  <div class="dash__room-meta">
+                    <div class="dash__room-name">{{ r.name }}</div>
+                    <div class="dash__room-sub">{{ r.devices }} devices</div>
+                  </div>
+                  <span class="dash__room-dot" [class.dash__room-dot--on]="r.active"></span>
+                  <span class="dash__room-chevron" aria-hidden="true">›</span>
+                </button>
+              }
+            </div>
+          </article>
+        </aside>
+      </div>
+    </section>
+  </main>
+</div>
